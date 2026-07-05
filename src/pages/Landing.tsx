@@ -1,0 +1,65 @@
+import { Link } from "react-router-dom";
+import { HeartLoader } from "../components/HeartLoader";
+import { landingCopy } from "../mock-data";
+import { C } from "../theme/tokens";
+
+export default function Landing() {
+  // Keep UI-only initial state; loader is used as a visual intro.
+  return (
+    <div style={{ minHeight: "100vh", background: C.bg, color: C.textHi, display: "flex", alignItems: "center", justifyContent: "center", padding: 18 }}>
+      <div style={{ width: "100%", maxWidth: 980, display: "grid", gridTemplateColumns: "1fr", gap: 18 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+          <div>
+            <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 900, fontSize: 26, marginBottom: 6 }}>{landingCopy.brand}</div>
+            <div style={{ color: C.textMid, fontSize: 13, lineHeight: 1.7 }}>{landingCopy.tagline}</div>
+          </div>
+          <div style={{ display: "none" }}>
+            {/* placeholder to keep layout stable */}
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 16 }}>
+          <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, padding: 18 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 900, fontSize: 18 }}>مرحبًا بك في مساحة “نبض”</div>
+              <div style={{ color: C.textLo, fontSize: 13, lineHeight: 1.75 }}>
+                نظام يساعد الفرق على رعاية معنويات الموظفين عبر قياس يومي لطيف، متابعة داعمة، ومكافآت تحفّز الاهتمام بذاتنا.
+              </div>
+
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 6 }}>
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  <button
+                    style={{
+                      width: "100%",
+                      background: `linear-gradient(135deg, ${C.lavender}, ${C.pink})`,
+                      border: "none",
+                      borderRadius: 14,
+                      padding: "12px 14px",
+                      fontWeight: 800,
+                      color: "#0B0B14",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {landingCopy.cta} →
+                  </button>
+                </Link>
+              </div>
+
+              <div style={{ color: C.textLo, fontSize: 12, marginTop: 6, lineHeight: 1.6 }}>
+                لا توجد بيانات حقيقية في هذه المرحلة — واجهات فقط مع Mock بيانات.
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: "grid", placeItems: "center", background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, padding: 18 }}>
+            <div style={{ width: "100%", maxWidth: 380 }}>
+              <div style={{ color: C.textMid, fontSize: 12, marginBottom: 10, textAlign: "center" }}>عرض بسيط لواجهة التحميل (Heart Loader)</div>
+              <HeartLoader progress={72} label="قلب نبض…" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
