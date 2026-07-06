@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { C, STATUS_STYLE, type StatusKey } from "../theme/tokens";
 import { teams } from "../mock-data/employee";
 import { notificationsMock } from "../mock-data";
@@ -8,6 +8,8 @@ import { sessionsMock } from "../mock-data/sessions";
 
 // UI-only MVP: sections show loading/data/empty variants.
 export default function EmployeeDashboard() {
+
+
   const [tab] = useState<"mood" | "points" | "sessions">("mood");
 
   const team = useMemo(() => {
@@ -15,9 +17,16 @@ export default function EmployeeDashboard() {
   }, []);
 
 
-  const hasData = true;
+  // UI states (Mock) to test loading/empty/data without backend.
+  const [sectionState, setSectionState] = useState<"loading" | "empty" | "data">("loading");
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setSectionState("data"), 900);
+    return () => window.clearTimeout(id);
+  }, []);
 
   return (
+
     <div style={{ minHeight: "100vh", background: C.bg, color: C.textHi, padding: 20 }}>
       <div style={{ maxWidth: 1040, margin: "0 auto" }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
@@ -38,7 +47,12 @@ export default function EmployeeDashboard() {
             <div style={{ fontWeight: 900, color: C.textHi, fontSize: 14 }}>حالة المعنويات</div>
             <div style={{ color: C.textLo, fontSize: 12, marginTop: 4 }}>اليومي/الأسبوعي (رسم بياني لاحقًا — Recharts في الخطوة التالية)</div>
             <div style={{ marginTop: 12 }}>
-              <DataState variant={hasData ? "data" : "empty"} loading={null} title="" description="">
+              <DataState
+                variant={sectionState}
+                loading={<div style={{ color: C.textLo, fontSize: 12 }}>جارٍ تجهيز البيانات…</div>}
+                title=""
+                description=""
+              >
                 <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between", gap: 12 }}>
                   <div>
                     <div style={{ color: C.textLo, fontSize: 12 }}>آخر درجة</div>
