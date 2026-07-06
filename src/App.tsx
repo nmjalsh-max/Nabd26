@@ -3,18 +3,22 @@ import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import { BootProvider } from "./auth/BootContext";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/employee" element={<EmployeeDashboard />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <BootProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/employee" element={<EmployeeDashboard />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </BootProvider>
   );
 }
+
 

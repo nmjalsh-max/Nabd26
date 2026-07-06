@@ -61,8 +61,8 @@ export default function Landing() {
                 HeartLoader عند عدم تمرير progress يقوم بعمل animation وبقى ظاهر.
                 إذا كنت تواجه أنه يغطي الصفحة، يمكن إيقافه مؤقتًا.
               */}
-              <HeartLoader progress={72} label={lang === "en" ? "Nabd heart…" : "قلب نبض…"} />
-              {/* بعد التأكد، أزل السطر التالي واستعمل بدون progress */}
+              <HeartLoader label={lang === "en" ? "Nabd heart…" : "قلب نبض…"} />
+
             </div>
           </div>
         </div>
