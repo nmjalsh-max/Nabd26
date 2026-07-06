@@ -1,42 +1,49 @@
-# TODO — Nabd HR Admin (MVP)
+# TODO — Nabd HR Admin (UI Only)
 
 ## المرحلة 1: فهم + هيكلة
 - [x] إنشاء خطة تنفيذ تفصيلية
-- [x] إنشاء مجلدات المشروع: `src/components`, `src/mock-data`, `src/pages` (أو `src/app`), `src/theme`
-- [x] تهيئة RTL كامل (تعديل `src/main.tsx` و/أو `src/index.css`)
-
-
+- [x] هيكلة المشروع الحالي (React/Vite + صفحات + mock-data موجود)
+- [ ] ضبط RTL ثابت + خط عربي مريح
 
 ## المرحلة 2: Design Tokens + Shared Components
-- [ ] نقل لوحة الألوان والـtokens من `App.tsx` إلى `src/theme/*`
-- [ ] إنشاء `<HeartLoader progress={n} />` داخل `src/components/HeartLoader.tsx`
-- [ ] إنشاء مكونات حالات: Loading / Empty / Data (قابلة لإعادة الاستخدام)
-- [ ] إنشاء shared UI cards (Stat/KPI/Card wrappers)
+- [ ] نقل/توحيد tokens في Tailwind (tailwind.config.js) + استخدام tokens بدل inline عند الإمكان
+- [ ] بناء مكتبة مكونات UI مشتركة:
+  - [ ] Button
+  - [ ] Card
+  - [ ] Dialog/Modal
+  - [ ] Input/Select/Textarea
+  - [ ] Badge
+  - [ ] Avatar
+  - [ ] Toast/Notification + NotificationCenter
+  - [ ] SkeletonLoader
+  - [ ] EmptyState
 
-## المرحلة 3: Mock Data
-- [ ] إنشاء `/mock-data` كامل بملفات متنوعة (موظفين، إدمن view، معنويات، نقاط، جلسات، إشعارات، uploads)
-- [ ] إزالة hardcoded data من صفحات/مكوّنات واستخدام الاستيراد من `/mock-data`
+## المرحلة 3: Mock Data المركزي
+- [ ] توحيد exports في `src/mock-data/index.ts` لتصبح جميع البيانات مستوردة من مكان واحد
+- [ ] التأكد أن الصفحات لن تحتوي hardcoded data
 
 ## المرحلة 4: Routing + الصفحات (0 → 12)
-- [ ] إضافة React Router وربط مسارات الصفحات
-- [ ] بناء الصفحة 0: Landing
-- [ ] بناء الصفحة 1: Login (UI فقط + toggle role + local validation)
-- [ ] بناء الصفحة 2: Employee Dashboard
-- [ ] بناء الصفحة 3: Admin Dashboard (privacy-friendly follow-up card)
-- [ ] بناء الصفحة 4: Upload files page (drag&drop + preview mock + record mock)
-- [ ] بناء الصفحة 5: Mood questions (5 أسئلة + Likert/emoji + شكر بعد الإكمال)
-- [ ] بناء الصفحة 6: Reports (filters + export toast mock + charts preview)
-- [ ] بناء الصفحة 7: Points & Rewards (ledger + badges + threshold animation)
-- [ ] بناء الصفحة 8: Sessions calendar weekly view + local booking
-- [ ] بناء الصفحة 10: Analytics & Monitoring (charts + heatmap-like + لطيف/غير وصمي)
-- [ ] بناء الصفحة 12: Notification system + Notification Center + toasts
+- [ ] إضافة/توحيد routes للصفحات (بدون backend):
+  - [ ] 0 Landing
+  - [ ] 1 Login
+  - [ ] 2 Employee Dashboard
+  - [ ] 3 Admin Dashboard
+  - [ ] 4 Upload files
+  - [ ] 5 Mood questions
+  - [ ] 6 Reports
+  - [ ] 7 Points & Rewards
+  - [ ] 8 Sessions calendar
+  - [ ] 9 Heart loader page
+  - [ ] 10 Analytics & Monitoring
+  - [ ] 11 Analytics/Monitoring (إن لزم كقسم مستقل وفق التصميم)
+  - [ ] 12 Notification system
+- [ ] تحديث الأقسام الحالية (Employee/Admin) لتطبيق حالات: loading/empty/data
 
-## المرحلة 5: دمج/اختبار
-- [ ] التأكد من تطبيق حالات 3 لكل قسم فرعي
-- [ ] التأكد من mobile-first + responsiveness
-- [ ] التأكد من عدم وجود backend/API حقيقي
-- [ ] تحديث `README.md` لشرح التشغيل وهيكلة المشروع
+## المرحلة 5: الدمج/اختبار
+- [ ] فحص mobile-first + responsiveness
+- [ ] التأكد من عدم وجود أي backend/API حقيقي
+- [ ] تحديث README.md للتشغيل وهيكلة المشروع
 
 ## المرحلة 6: نهاية
-- [ ] تشغيل `npm run dev` والتأكد بصريًا من كل صفحة
+- [ ] تشغيل `npm run dev` والتأكد بصريًا من كل route
 

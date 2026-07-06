@@ -2,9 +2,14 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { C } from "../theme/tokens";
 import { authMock } from "../mock-data";
+import { t } from "../i18n/i18n";
+import { useLang } from "../i18n/LangContext";
+import LangToggle from "../components/LangToggle";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { lang } = useLang();
+
   const [role, setRole] = useState<"موظف" | "أدمن">("موظف");
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -21,42 +26,45 @@ export default function Login() {
 
     const id = identifier.trim();
     if (!id) {
-      setError("الرجاء إدخال البريد/رقم وظيفي.");
+      setError(t(lang, "emptyIdentifier"));
       return;
     }
     if (!password) {
-      setError("الرجاء إدخال كلمة المرور.");
+      setError(t(lang, "emptyPassword"));
       return;
     }
 
     const ok = candidates.some((u) => u.username === id && u.password === password);
     if (!ok) {
-      setError("بيانات غير صحيحة. جرّب مرة أخرى");
+      setError(t(lang, "invalidData"));
       return;
     }
 
     setError(null);
-    // UI-only navigation
     navigate(role === "موظف" ? "/employee" : "/admin");
   }
 
   return (
     <div style={{ minHeight: "100vh", background: C.bg, color: C.textHi, display: "flex", alignItems: "center", justifyContent: "center", padding: 18 }}>
       <div style={{ width: "100%", maxWidth: 520, display: "flex", flexDirection: "column", gap: 14 }}>
-        <div style={{ textAlign: "right" }}>
-          <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 900, fontSize: 22 }}>تسجيل الدخول</div>
-          <div style={{ color: C.textLo, fontSize: 12, marginTop: 4 }}>
-            واجهة موحّدة — تمييز شكلي بين موظف/أدمن.
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
+          <div>
+            <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 900, fontSize: 22 }}>{t(lang, "loginTitle")}</div>
+            <div style={{ color: C.textLo, fontSize: 12, marginTop: 4 }}>{t(lang, "loginSubtitle")}</div>
           </div>
+          <LangToggle />
         </div>
 
         <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, padding: 16 }}>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 14, justifyContent: "flex-start" }}>
-            {["موظف", "أدمن"].map((r) => (
+            {([
+              { r: "موظف" as const, label: t(lang, "roleEmployee") },
+              { r: "أدمن" as const, label: t(lang, "roleAdmin") },
+            ] as const).map(({ r, label }) => (
               <button
                 key={r}
                 onClick={() => {
-                  setRole(r as any);
+                  setRole(r);
                   setError(null);
                   setTouched(false);
                 }}
@@ -71,14 +79,14 @@ export default function Login() {
                   fontSize: 12,
                 }}
               >
-                {r}
+                {label}
               </button>
             ))}
           </div>
 
           <form onSubmit={submit} className="flex flex-col gap-10">
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              <label style={{ color: C.textMid, fontSize: 12 }}>البريد أو رقم الموظف</label>
+              <label style={{ color: C.textMid, fontSize: 12 }}>{t(lang, "identifierLabel")}</label>
               <input
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
@@ -96,7 +104,7 @@ export default function Login() {
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              <label style={{ color: C.textMid, fontSize: 12 }}>كلمة المرور</label>
+              <label style={{ color: C.textMid, fontSize: 12 }}>{t(lang, "passwordLabel")}</label>
               <input
                 type="password"
                 value={password}
@@ -117,7 +125,7 @@ export default function Login() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
               <button
                 type="button"
-                onClick={() => setError("رابط “نسيت كلمة المرور” شكلي في هذه المرحلة.")}
+                onClick={() => setError(lang === "en" ? "Forgot password link is mock in this stage." : "رابط “نسيت كلمة المرور” شكلي في هذه المرحلة." )}
                 style={{
                   background: "none",
                   border: "none",
@@ -128,7 +136,7 @@ export default function Login() {
                   fontWeight: 700,
                 }}
               >
-                نسيت كلمة المرور؟
+                {t(lang, "forgotPassword")}
               </button>
 
               <button
@@ -144,7 +152,7 @@ export default function Login() {
                   minWidth: 140,
                 }}
               >
-                دخول →
+                {t(lang, "submit")} →
               </button>
             </div>
 
@@ -155,10 +163,8 @@ export default function Login() {
             )}
 
             <div style={{ color: C.textLo, fontSize: 12, lineHeight: 1.7 }}>
-              بيانات تجريبية:
-              <div style={{ marginTop: 4, color: C.textMid, fontWeight: 800 }}>
-                موظف: emp1 / 1234 — أدمن: admin / 1234
-              </div>
+              {lang === "en" ? "Mock credentials:" : "بيانات تجريبية:"}
+              <div style={{ marginTop: 4, color: C.textMid, fontWeight: 800 }}>{t(lang, "loginHint")}</div>
             </div>
           </form>
         </div>
@@ -166,4 +172,5 @@ export default function Login() {
     </div>
   );
 }
+
 
