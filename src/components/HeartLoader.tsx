@@ -16,9 +16,19 @@ export function HeartLoader({ progress, label = "Measuring your team's pulse…"
       return;
     }
 
+    // If progress is not provided, we still animate, but we DO NOT loop forever.
+    // This avoids the UI looking "stuck" on a specific value (e.g. 71%).
     let frame: number | null = null;
     let start: number | null = null;
+
     const duration = 2600;
+    const safetyTimeout = 5200;
+
+    const stopAtEnd = () => {
+      setP(100);
+      setHeartFill(1);
+      setPulse(1);
+    };
 
     const animate = (ts: number) => {
       if (!start) start = ts;
@@ -28,19 +38,22 @@ export function HeartLoader({ progress, label = "Measuring your team's pulse…"
       setHeartFill(eased);
       setPulse(eased);
 
-      if (t < 1) frame = requestAnimationFrame(animate);
-      else {
-        // loop subtly for smoother perceived loading
-        setTimeout(() => {
-          start = null;
-          frame = requestAnimationFrame(animate);
-        }, 350);
+      if (t < 1) {
+        frame = requestAnimationFrame(animate);
+      } else {
+        stopAtEnd();
       }
     };
 
     frame = requestAnimationFrame(animate);
+    const timeoutId = window.setTimeout(() => {
+      // Fallback: even if RAF gets interrupted, we still end the loader.
+      stopAtEnd();
+    }, safetyTimeout);
+
     return () => {
       if (frame) cancelAnimationFrame(frame);
+      window.clearTimeout(timeoutId);
     };
   }, [progress]);
 
