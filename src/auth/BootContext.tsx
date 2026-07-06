@@ -39,7 +39,8 @@ export function BootProvider({ children }: { children: React.ReactNode }) {
     const id = window.setTimeout(() => {
       setRole(stored);
       setIsLoading(false);
-    }, 2000);
+    }, 0);
+
 
     return () => window.clearTimeout(id);
   }, []);
