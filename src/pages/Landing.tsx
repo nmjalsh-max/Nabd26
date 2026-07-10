@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { HeartLoader } from "../components/HeartLoader";
 import { C } from "../theme/tokens";
@@ -5,11 +6,19 @@ import LangToggle from "../components/LangToggle";
 import { useLang } from "../i18n/LangContext";
 import { t } from "../i18n/i18n";
 
+
 export default function Landing() {
   const { lang } = useLang();
+  const [showLoader, setShowLoader] = useState(true);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setShowLoader(false), 2500);
+    return () => window.clearTimeout(id);
+  }, []);
 
   return (
     <div style={{ minHeight: "100vh", background: C.bg, color: C.textHi, display: "flex", alignItems: "center", justifyContent: "center", padding: 18 }}>
+
       <div style={{ width: "100%", maxWidth: 980, display: "grid", gridTemplateColumns: "1fr", gap: 18 }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
           <div>
@@ -44,6 +53,24 @@ export default function Landing() {
                     {t(lang, "ctaLogin")} →
                   </button>
                 </Link>
+
+                <Link to="/signup" style={{ textDecoration: "none" }}>
+                  <button
+                    style={{
+                      width: "100%",
+                      background: "transparent",
+                      border: `1px solid ${C.borderLo ?? C.border}`,
+                      borderRadius: 14,
+                      padding: "12px 14px",
+                      fontWeight: 900,
+                      color: C.lavSoft,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {lang === "en" ? "Sign up" : "إنشاء حساب"} →
+                  </button>
+                </Link>
+
               </div>
 
               <div style={{ color: C.textLo, fontSize: 12, marginTop: 6, lineHeight: 1.6 }}>
@@ -61,9 +88,12 @@ export default function Landing() {
                 HeartLoader عند عدم تمرير progress يقوم بعمل animation وبقى ظاهر.
                 إذا كنت تواجه أنه يغطي الصفحة، يمكن إيقافه مؤقتًا.
               */}
-              <HeartLoader label={lang === "en" ? "Nabd heart…" : "قلب نبض…"} />
+              {showLoader && (
+                <HeartLoader label={lang === "en" ? "Nabd heart…" : "قلب نبض…"} />
+              )}
 
             </div>
+
           </div>
         </div>
       </div>

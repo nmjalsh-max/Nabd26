@@ -14,8 +14,10 @@ import HeartLoaderPage from "./pages/HeartLoaderPage";
 import AnalyticsMonitoring from "./pages/AnalyticsMonitoring";
 import AnalyticsMonitoring2 from "./pages/AnalyticsMonitoring2";
 import NotificationSystem from "./pages/NotificationSystem";
+import Signup from "./pages/Signup";
 
 export default function App() {
+
 
   return (
     <BootProvider>
@@ -24,6 +26,7 @@ export default function App() {
           {/* 0-3 */}
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/employee" element={<EmployeeDashboard />} />
           <Route path="/admin" element={<AdminDashboard />} />
 
