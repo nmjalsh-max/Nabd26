@@ -1,52 +1,108 @@
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import { HeartLoader } from "../components/HeartLoader";
-
-type Role = "admin" | "employee";
+import { getSupabaseClient, resolveUserRoleById, type AppRole } from "../lib/supabaseClient";
 
 type AuthState = {
   isLoading: boolean;
-  role: Role | null;
+  role: AppRole | null;
+  userId: string | null;
 };
 
-export const AuthContext = createContext<AuthState>({ isLoading: true, role: null });
+export const AuthContext = createContext<AuthState>({
+  isLoading: true,
+  role: null,
+  userId: null,
+});
 
 const STORAGE_KEY = "mock_auth";
 
-function readStoredRole(): Role | null {
+function readStoredSession(): { role: AppRole | null; userId: string | null } {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    const r = parsed?.role;
-    return r === "admin" || r === "employee" ? r : null;
+    if (!raw) {
+      return { role: null, userId: null };
+    }
+
+    const parsed = JSON.parse(raw) as { role?: string; userId?: string };
+    const role = parsed.role === "admin" || parsed.role === "employee" ? parsed.role : null;
+
+    return { role, userId: parsed.userId ?? null };
   } catch {
-    return null;
+    return { role: null, userId: null };
   }
 }
 
-/**
- * Minimal auth boot: shows HeartLoader for ~2 seconds then exposes role.
- * No route protection is enforced by default (kept simple per task).
- */
 export function BootProvider({ children }: { children: React.ReactNode }) {
-  const [role, setRole] = useState<Role | null>(null);
+  const [role, setRole] = useState<AppRole | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const stored = readStoredRole();
+    let ignore = false;
 
-    // Simulate permission check once per refresh.
-    const id = window.setTimeout(() => {
-      setRole(stored);
-      setIsLoading(false);
-    }, 0);
+    async function syncFromSupabaseSession(sessionUserId: string | null, sessionRole: AppRole | null) {
+      if (!ignore) {
+        setUserId(sessionUserId);
+        setRole(sessionRole);
+        setIsLoading(false);
+      }
+    }
 
+    async function initAuth() {
+      const client = getSupabaseClient();
 
-    return () => window.clearTimeout(id);
+      if (!client) {
+        const stored = readStoredSession();
+        if (!ignore) {
+          setRole(stored.role);
+          setUserId(stored.userId);
+          setIsLoading(false);
+        }
+        return;
+      }
+
+      const {
+        data: { session },
+      } = await client.auth.getSession();
+
+      if (!session?.user?.id) {
+        const stored = readStoredSession();
+        if (!ignore) {
+          setRole(stored.role);
+          setUserId(stored.userId);
+          setIsLoading(false);
+        }
+        return;
+      }
+
+      const resolvedRole = await resolveUserRoleById(client, session.user.id);
+      await syncFromSupabaseSession(session.user.id, resolvedRole);
+
+      const {
+        data: { subscription },
+      } = client.auth.onAuthStateChange(async (_event, nextSession) => {
+        if (!nextSession?.user?.id) {
+          await syncFromSupabaseSession(null, null);
+          return;
+        }
+
+        const nextRole = await resolveUserRoleById(client, nextSession.user.id);
+        await syncFromSupabaseSession(nextSession.user.id, nextRole);
+      });
+
+      return () => {
+        subscription.unsubscribe();
+      };
+    }
+
+    void initAuth();
+
+    return () => {
+      ignore = true;
+    };
   }, []);
 
-
-  const value = useMemo(() => ({ isLoading, role }), [isLoading, role]);
+  const value = useMemo(() => ({ isLoading, role, userId }), [isLoading, role, userId]);
 
   if (isLoading) {
     return (

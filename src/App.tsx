@@ -1,9 +1,10 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import Landing from "./pages/Landing";
+
 import Login from "./pages/Login";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import { BootProvider } from "./auth/BootContext";
+import { ProtectedRoute } from "./auth/ProtectedRoute";
 
 import UploadFiles from "./pages/UploadFiles";
 import MoodQuestions from "./pages/MoodQuestions";
@@ -17,31 +18,104 @@ import NotificationSystem from "./pages/NotificationSystem";
 import Signup from "./pages/Signup";
 
 export default function App() {
-
-
   return (
     <BootProvider>
       <BrowserRouter>
         <Routes>
-          {/* 0-3 */}
-          <Route path="/" element={<Landing />} />
+          {/* Auth */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/employee" element={<EmployeeDashboard />} />
-          <Route path="/admin" element={<AdminDashboard />} />
 
-          {/* 4-12 */}
-          <Route path="/upload" element={<UploadFiles />} />
-          <Route path="/mood" element={<MoodQuestions />} />
-          <Route path="/reports" element={<Reports />} />
-          <Route path="/points" element={<PointsRewards />} />
-          <Route path="/sessions" element={<SessionsCalendar />} />
-          <Route path="/heart-loader" element={<HeartLoaderPage />} />
-          <Route path="/analytics" element={<AnalyticsMonitoring />} />
-          <Route path="/analytics-2" element={<AnalyticsMonitoring2 />} />
-          <Route path="/notifications" element={<NotificationSystem />} />
+          {/* Dashboards */}
+          <Route
+            path="/employee"
+            element={
+              <ProtectedRoute allowedRole="employee">
+                <EmployeeDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRole="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* Other pages */}
+          <Route
+            path="/upload"
+            element={
+              <ProtectedRoute allowedRole="admin">
+                <UploadFiles />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mood"
+            element={
+              <ProtectedRoute allowedRole="employee">
+                <MoodQuestions />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reports"
+            element={
+              <ProtectedRoute allowedRole="admin">
+                <Reports />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/points"
+            element={
+              <ProtectedRoute allowedRole="employee">
+                <PointsRewards />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sessions"
+            element={
+              <ProtectedRoute allowedRole={["employee", "admin"]}>
+                <SessionsCalendar />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/heart-loader"
+            element={<HeartLoaderPage />}
+          />
+          <Route
+            path="/analytics"
+            element={
+              <ProtectedRoute allowedRole="admin">
+                <AnalyticsMonitoring />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/analytics-2"
+            element={
+              <ProtectedRoute allowedRole="admin">
+                <AnalyticsMonitoring2 />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute allowedRole="employee">
+                <NotificationSystem />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </BrowserRouter>
     </BootProvider>
