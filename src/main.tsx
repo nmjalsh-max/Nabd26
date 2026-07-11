@@ -17,7 +17,7 @@ if (typeof document !== "undefined") {
 
 ReactDOM.createRoot(rootEl).render(
   <React.StrictMode>
-    <LangProvider initialLang="en">
+    <LangProvider initialLang="ar">
       <App />
     </LangProvider>
   </React.StrictMode>

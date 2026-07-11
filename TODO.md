@@ -1,10 +1,10 @@
 # TODO — Tasks Roadmap
 
 - [x] TASK 1: Routing + هيكلة مجلدات + مكونات مشتركة
-  - [x] تحديث `src/App.tsx` بحيث `/login` هو المسار الافتراضي و`*` يوجّه لـ `/login`
+  - [x] تحديث `src/App.tsx` بحيث `/` يعرض Landing احترافيًا، و`*` يوجّه إلى `/`
+  - [x] بناء Navigation موحد داخل `AppShell` حسب الدور (admin/employee)
   - [x] بناء Guards حقيقية حسب الدور (بعد ربط Auth بـ Supabase)
-  - [x] إنشاء `Modal`, `Toast`, وملف `Modal.tsx/Toast.tsx` إن لم تكن موجودة
-  - [x] التأكد من `src/components/ui/index.ts` يطابق الملفات الفعلية
+  - [x] إزالة الاعتماد على مسارات "يتيمة" بلا وصول داخلي
 
 - [x] TASK 2: Supabase Schema + RLS
   - [x] إنشاء migration: `supabase/migrations/001_init_hr_schema.sql`
@@ -43,6 +43,13 @@
   - [x] حساب الرصيد الحقيقي من `points_ledger`
   - [x] إنشاء `user_rewards` عند الوصول للعُتبات
   - [x] إرسال إشعار مكافأة في `notifications`
+
+- [x] TASK 9–13: Business flow completion
+  - [x] جلسات يوغا واحتياطي booking/attendance
+  - [x] تقارير + CSV/PDF export
+  - [x] تحليل ورصد + تصنيف تلقائي
+  - [x] تنبيهات علاجية/متابعة
+  - [x] إشعارات Realtime + fallback
 
 - [x] Testing
   - [x] `npm run lint` + `npm run build`

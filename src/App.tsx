@@ -16,23 +16,27 @@ import AnalyticsMonitoring from "./pages/AnalyticsMonitoring";
 import AnalyticsMonitoring2 from "./pages/AnalyticsMonitoring2";
 import NotificationSystem from "./pages/NotificationSystem";
 import Signup from "./pages/Signup";
+import Landing from "./pages/Landing";
+import { AppShell } from "./components/AppShell";
 
 export default function App() {
   return (
     <BootProvider>
       <BrowserRouter>
         <Routes>
-          {/* Auth */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          {/* Public marketing and auth */}
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
-          {/* Dashboards */}
+          {/* Protected dashboards */}
           <Route
             path="/employee"
             element={
               <ProtectedRoute allowedRole="employee">
-                <EmployeeDashboard />
+                <AppShell>
+                  <EmployeeDashboard />
+                </AppShell>
               </ProtectedRoute>
             }
           />
@@ -40,17 +44,21 @@ export default function App() {
             path="/admin"
             element={
               <ProtectedRoute allowedRole="admin">
-                <AdminDashboard />
+                <AppShell role="admin">
+                  <AdminDashboard />
+                </AppShell>
               </ProtectedRoute>
             }
           />
 
-          {/* Other pages */}
+          {/* Protected pages */}
           <Route
             path="/upload"
             element={
               <ProtectedRoute allowedRole="admin">
-                <UploadFiles />
+                <AppShell role="admin">
+                  <UploadFiles />
+                </AppShell>
               </ProtectedRoute>
             }
           />
@@ -58,7 +66,9 @@ export default function App() {
             path="/mood"
             element={
               <ProtectedRoute allowedRole="employee">
-                <MoodQuestions />
+                <AppShell>
+                  <MoodQuestions />
+                </AppShell>
               </ProtectedRoute>
             }
           />
@@ -66,7 +76,9 @@ export default function App() {
             path="/reports"
             element={
               <ProtectedRoute allowedRole="admin">
-                <Reports />
+                <AppShell role="admin">
+                  <Reports />
+                </AppShell>
               </ProtectedRoute>
             }
           />
@@ -74,7 +86,9 @@ export default function App() {
             path="/points"
             element={
               <ProtectedRoute allowedRole="employee">
-                <PointsRewards />
+                <AppShell>
+                  <PointsRewards />
+                </AppShell>
               </ProtectedRoute>
             }
           />
@@ -82,19 +96,27 @@ export default function App() {
             path="/sessions"
             element={
               <ProtectedRoute allowedRole={["employee", "admin"]}>
-                <SessionsCalendar />
+                <AppShell>
+                  <SessionsCalendar />
+                </AppShell>
               </ProtectedRoute>
             }
           />
           <Route
             path="/heart-loader"
-            element={<HeartLoaderPage />}
+            element={
+              <AppShell>
+                <HeartLoaderPage />
+              </AppShell>
+            }
           />
           <Route
             path="/analytics"
             element={
               <ProtectedRoute allowedRole="admin">
-                <AnalyticsMonitoring />
+                <AppShell role="admin">
+                  <AnalyticsMonitoring />
+                </AppShell>
               </ProtectedRoute>
             }
           />
@@ -102,20 +124,24 @@ export default function App() {
             path="/analytics-2"
             element={
               <ProtectedRoute allowedRole="admin">
-                <AnalyticsMonitoring2 />
+                <AppShell role="admin">
+                  <AnalyticsMonitoring2 />
+                </AppShell>
               </ProtectedRoute>
             }
           />
           <Route
             path="/notifications"
             element={
-              <ProtectedRoute allowedRole="employee">
-                <NotificationSystem />
+              <ProtectedRoute allowedRole={["employee", "admin"]}>
+                <AppShell>
+                  <NotificationSystem />
+                </AppShell>
               </ProtectedRoute>
             }
           />
 
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </BootProvider>
