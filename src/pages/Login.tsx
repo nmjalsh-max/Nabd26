@@ -9,6 +9,33 @@ import { getSupabaseClient, resolveEmailByEmployeeNumber } from "../lib/supabase
 
 const MOCK_STORAGE_KEY = "mock_auth";
 
+function resolveMockLoginUser(role: "employee" | "admin", rawIdentifier: string) {
+  const normalized = rawIdentifier.trim().toLowerCase();
+  const baseIdentifier = normalized.replace(/@.*$/, "");
+
+  if (role === "employee") {
+    if (["emp1", "emp-1", "emp1@example.com", "emp-1@example.com"].includes(normalized)) {
+      return authMock.employees[0];
+    }
+
+    if (["emp1", "emp-1"].includes(baseIdentifier)) {
+      return authMock.employees[0];
+    }
+  }
+
+  if (role === "admin") {
+    if (["admin", "admin@example.com"].includes(normalized)) {
+      return authMock.admins[0];
+    }
+
+    if (baseIdentifier === "admin") {
+      return authMock.admins[0];
+    }
+  }
+
+  return null;
+}
+
 export default function Login() {
   const navigate = useNavigate();
   const { lang } = useLang();
@@ -36,8 +63,8 @@ export default function Login() {
 
     const client = getSupabaseClient();
     if (!client) {
-      const mockUser = role === "employee" ? authMock.employees[0] : authMock.admins[0];
-      const isValidMock = mockUser.username === id && mockUser.password === password;
+      const mockUser = resolveMockLoginUser(role, id);
+      const isValidMock = Boolean(mockUser && mockUser.password === password);
 
       if (!isValidMock) {
         setError(t(lang, "invalidData"));
@@ -169,7 +196,7 @@ export default function Login() {
               <input
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
-                placeholder={role === "employee" ? "EMP-..." : "admin@example.com"}
+                placeholder={role === "employee" ? "emp1 أو EMP-..." : "admin"}
                 style={{
                   background: C.surfaceHi,
                   border: `1px solid ${C.border}`,
