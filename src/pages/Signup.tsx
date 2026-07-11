@@ -8,6 +8,8 @@ export default function Signup() {
   const navigate = useNavigate();
   const { lang } = useLang();
 
+  const [role, setRole] = useState<"employee" | "admin">("employee");
+  const [employeeNumber, setEmployeeNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -21,6 +23,18 @@ export default function Signup() {
     if (!client) {
       setError(lang === "en" ? "Supabase is not configured (missing env vars)." : "Supabase غير مُعدّ (متغيرات env ناقصة). ");
       return;
+    }
+
+    if (!role) {
+      setError(lang === "en" ? "Role is required." : "الدور مطلوب.");
+      return;
+    }
+
+    if (role === "employee") {
+      if (!employeeNumber.trim()) {
+        setError(lang === "en" ? "Employee number is required." : "رقم الموظف مطلوب.");
+        return;
+      }
     }
 
     if (!email.trim()) {
@@ -37,6 +51,12 @@ export default function Signup() {
     const { error } = await client.auth.signUp({
       email: email.trim(),
       password,
+      options: {
+        data: {
+          role,
+          employee_number: role === "employee" ? employeeNumber.trim() : null,
+        },
+      },
     });
 
     setLoading(false);
@@ -76,6 +96,59 @@ export default function Signup() {
 
         <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, padding: 16 }}>
           <form onSubmit={submit} className="flex flex-col gap-10">
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 6, justifyContent: "flex-start" }}>
+              {([
+                { r: "employee" as const, label: lang === "en" ? "Employee" : "موظف" },
+                { r: "admin" as const, label: lang === "en" ? "Admin" : "مدير" },
+              ] as const).map(({ r, label }) => (
+                <button
+                  key={r}
+                  type="button"
+                  onClick={() => {
+                    setRole(r);
+                    setError(null);
+                  }}
+                  style={{
+                    border: `1px solid ${role === r ? C.lavender : C.borderLo}`,
+                    background:
+                      role === r
+                        ? `linear-gradient(135deg, ${C.lavender}33, ${C.pink}22)`
+                        : "transparent",
+                    color: role === r ? C.lavSoft : C.textLo,
+                    borderRadius: 999,
+                    padding: "8px 12px",
+                    cursor: "pointer",
+                    fontWeight: 800,
+                    fontSize: 12,
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {role === "employee" && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                <label style={{ color: C.textMid, fontSize: 12 }}>
+                  {lang === "en" ? "Employee number" : "رقم الموظف"}
+                </label>
+                <input
+                  value={employeeNumber}
+                  onChange={(e) => setEmployeeNumber(e.target.value)}
+                  placeholder={lang === "en" ? "emp1" : "emp1"}
+                  style={{
+                    background: C.surfaceHi,
+                    border: `1px solid ${C.border}`,
+                    borderRadius: 12,
+                    padding: "11px 12px",
+                    outline: "none",
+                    color: C.textHi,
+                    fontSize: 13,
+                  }}
+                />
+              </div>
+            )}
+
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               <label style={{ color: C.textMid, fontSize: 12 }}>{lang === "en" ? "Email" : "البريد الإلكتروني"}</label>
               <input

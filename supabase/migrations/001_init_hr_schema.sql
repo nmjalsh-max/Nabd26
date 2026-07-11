@@ -280,3 +280,64 @@ with check (
   or user_id = auth.uid()
 );
 
+-- =======================
+-- Auth user provisioning
+-- =======================
+-- Goal: ensure public.users row exists for every auth user.
+--
+-- Assumes role + employee_number are passed in signUp as:
+--   user_metadata.role ('admin'|'employee')
+--   user_metadata.employee_number (string)
+--
+-- If role isn't provided, defaults to 'employee'.
+
+create or replace function public.handle_new_auth_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  declare
+    v_employee_number text;
+    v_role text;
+    v_full_name text;
+  begin
+    v_employee_number := new.raw_user_meta_data->>'employee_number';
+    v_role := new.raw_user_meta_data->>'role';
+    v_full_name := coalesce(new.raw_user_meta_data->>'full_name', '');
+
+    if v_role is null or v_role not in ('admin','employee') then
+      v_role := 'employee';
+    end if;
+
+    if v_full_name = '' then
+      v_full_name := coalesce(new.email, 'User');
+    end if;
+
+    insert into public.users (id, full_name, email, role, department, employee_number)
+    values (
+      new.id,
+      v_full_name,
+      new.email,
+      v_role,
+      null,
+      v_employee_number
+    )
+    on conflict (id) do update
+    set
+      email = excluded.email,
+      role = excluded.role,
+      employee_number = coalesce(excluded.employee_number, public.users.employee_number),
+      full_name = excluded.full_name;
+
+    return new;
+  end;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+after insert on auth.users
+for each row execute procedure public.handle_new_auth_user();
+
