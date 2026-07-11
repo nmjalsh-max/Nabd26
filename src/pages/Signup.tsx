@@ -1,13 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createClient } from "@supabase/supabase-js";
 import { C } from "../theme/tokens";
 import { useLang } from "../i18n/LangContext";
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
-
-const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
+import { getSupabaseClient } from "../lib/supabaseClient";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -22,7 +17,8 @@ export default function Signup() {
     e.preventDefault();
     setError(null);
 
-    if (!supabase) {
+    const client = getSupabaseClient();
+    if (!client) {
       setError(lang === "en" ? "Supabase is not configured (missing env vars)." : "Supabase غير مُعدّ (متغيرات env ناقصة). ");
       return;
     }
@@ -38,7 +34,7 @@ export default function Signup() {
     }
 
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { error } = await client.auth.signUp({
       email: email.trim(),
       password,
     });
