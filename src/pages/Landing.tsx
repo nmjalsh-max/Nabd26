@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
 import { C } from "../theme/tokens";
+import LangToggle from "../components/LangToggle";
+import { useLang } from "../i18n/LangContext";
 
-// شعار القلب النابض — نفس الشعار المستخدم في AppShell وHeartLoader
+// Heart logo — same as used in AppShell and HeartLoader
 function HeartLogo({ size = 26 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 34 34">
@@ -21,15 +22,25 @@ function HeartLogo({ size = 26 }: { size?: number }) {
   );
 }
 
-const features = [
-  { icon: "❤", title: "Daily pulse", desc: "مقياس يومي بسيط لمزاجك ورفاهيتك" },
-  { icon: "🤝", title: "Support follow-up", desc: "متابعة داعمة وغير وصمية للحالات الحرجة" },
-  { icon: "★", title: "Reward loops", desc: "نقاط ومكافآت تحفّزك على المشاركة" },
+const featuresEn = [
+  { icon: "❤️", title: "Daily pulse", desc: "A simple daily check-in to measure your mood and well-being." },
+  { icon: "🤝", title: "Support follow-up", desc: "Supportive and non-stigmatizing follow-up for critical cases." },
+  { icon: "⭐", title: "Reward loops", desc: "Points and rewards that motivate you to participate." },
+];
+
+const featuresAr = [
+  { icon: "❤️", title: "قياس يومي", desc: "مقياس يومي بسيط لمزاجك ورفاهيتك" },
+  { icon: "🤝", title: "متابعة داعمة", desc: "متابعة داعمة وغير وصمية للحالات الحرجة" },
+  { icon: "⭐", title: "مكافآت وتحفيز", desc: "نقاط ومكافآت تحفّزك على المشاركة" },
 ];
 
 export default function Landing() {
+  const { lang } = useLang();
+  const isEn = lang === "en";
+  const features = isEn ? featuresEn : featuresAr;
+
   return (
-    <div dir="rtl" style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Cairo', sans-serif" }}>
+    <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Cairo', sans-serif" }}>
       {/* Header */}
       <header
         style={{ borderBottom: `0.5px solid ${C.borderLo}` }}
@@ -41,17 +52,7 @@ export default function Landing() {
             Nabd Space
           </span>
         </div>
-        <div className="flex gap-2">
-          <button
-            style={{ background: C.surfaceHi, border: `0.5px solid ${C.border}`, color: C.textHi }}
-            className="rounded-full px-4 py-1.5 text-xs"
-          >
-            العربية
-          </button>
-          <button style={{ color: C.textLo }} className="rounded-full px-4 py-1.5 text-xs">
-            English
-          </button>
-        </div>
+        <LangToggle />
       </header>
 
       {/* Hero */}
@@ -71,13 +72,17 @@ export default function Landing() {
           style={{ fontFamily: "'Sora', sans-serif", color: C.lavSoft }}
           className="text-4xl font-bold mb-3"
         >
-          نبض
+          {isEn ? "Nabd Space" : "نبض"}
         </h1>
         <p style={{ color: C.textHi }} className="max-w-md mx-auto mb-2 leading-relaxed">
-          منصة تهتم بصحتك النفسية داخل بيئة العمل
+          {isEn
+            ? "Caring for employee morale — with calm and attention."
+            : "منصة تهتم بصحتك النفسية داخل بيئة العمل"}
         </p>
         <p style={{ color: C.textMid }} className="text-sm max-w-md mx-auto mb-8 leading-relaxed">
-          تابع مزاجك يوميًا، اجمع نقاطًا، واحجز جلسات استرخاء — في مكان واحد هادئ وآمن
+          {isEn
+            ? "Track your daily mood, collect points, and book relaxation sessions — all in one calm and safe place."
+            : "تابع مزاجك يوميًا، اجمع نقاطًا، واحجز جلسات استرخاء — في مكان واحد هادئ وآمن"}
         </p>
         <div className="flex justify-center gap-3">
           <Link
@@ -85,14 +90,14 @@ export default function Landing() {
             style={{ background: `linear-gradient(90deg, ${C.lavender}, ${C.pink})`, color: C.bg }}
             className="rounded-2xl px-7 py-3 text-sm font-bold"
           >
-            تسجيل الدخول
+            {isEn ? "Login" : "تسجيل الدخول"}
           </Link>
           <Link
             to="/signup"
             style={{ border: `0.5px solid ${C.lavDim}`, color: C.lavSoft }}
             className="rounded-2xl px-7 py-3 text-sm"
           >
-            إنشاء حساب
+            {isEn ? "Create account" : "إنشاء حساب"}
           </Link>
         </div>
       </section>
@@ -128,10 +133,10 @@ export default function Landing() {
           className="rounded-2xl p-6 text-center"
         >
           <p style={{ fontFamily: "'Sora', sans-serif", color: C.textHi }} className="text-sm mb-1">
-            أنا موظف
+            {isEn ? "I'm an Employee" : "أنا موظف"}
           </p>
           <p style={{ color: C.textLo }} className="text-xs">
-            تابع مزاجك واستمتع بمزاياك
+            {isEn ? "Track your mood and enjoy your benefits" : "تابع مزاجك واستمتع بمزاياك"}
           </p>
         </div>
         <div
@@ -139,10 +144,10 @@ export default function Landing() {
           className="rounded-2xl p-6 text-center"
         >
           <p style={{ fontFamily: "'Sora', sans-serif", color: C.textHi }} className="text-sm mb-1">
-            أنا أدمن
+            {isEn ? "I'm an Admin" : "أنا أدمن"}
           </p>
           <p style={{ color: C.textLo }} className="text-xs">
-            راقب وحلّل صحة فريقك
+            {isEn ? "Monitor and analyze your team's well-being" : "راقب وحلّل صحة فريقك"}
           </p>
         </div>
       </section>

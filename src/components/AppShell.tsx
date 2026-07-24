@@ -6,7 +6,17 @@ import { getSupabaseClient } from "../lib/supabaseClient";
 import LangToggle from "./LangToggle";
 import { useLang } from "../i18n/LangContext";
 
-const ADMIN_NAV = [
+const ADMIN_NAV_EN = [
+  { to: "/admin", label: "Dashboard" },
+  { to: "/upload", label: "Upload" },
+  { to: "/reports", label: "Reports" },
+  { to: "/sessions", label: "Sessions" },
+  { to: "/analytics", label: "Analytics" },
+  { to: "/analytics-2", label: "Compare" },
+  { to: "/notifications", label: "Notifications" },
+];
+
+const ADMIN_NAV_AR = [
   { to: "/admin", label: "لوحة الأدمن" },
   { to: "/upload", label: "رفع الملفات" },
   { to: "/reports", label: "التقارير" },
@@ -16,7 +26,15 @@ const ADMIN_NAV = [
   { to: "/notifications", label: "الإشعارات" },
 ];
 
-const EMPLOYEE_NAV = [
+const EMPLOYEE_NAV_EN = [
+  { to: "/employee", label: "Dashboard" },
+  { to: "/mood", label: "Daily Mood" },
+  { to: "/points", label: "Points" },
+  { to: "/sessions", label: "Sessions" },
+  { to: "/notifications", label: "Notifications" },
+];
+
+const EMPLOYEE_NAV_AR = [
   { to: "/employee", label: "لوحة الموظف" },
   { to: "/mood", label: "المقياس اليومي" },
   { to: "/points", label: "النقاط" },
@@ -31,7 +49,9 @@ export function AppShell({ children, role }: { children: React.ReactNode; role?:
   const { userId } = authContext;
   const resolvedRole = role ?? authContext.role ?? "employee";
 
-  const navItems = resolvedRole === "admin" ? ADMIN_NAV : EMPLOYEE_NAV;
+  const navItems = resolvedRole === "admin"
+    ? (lang === "en" ? ADMIN_NAV_EN : ADMIN_NAV_AR)
+    : (lang === "en" ? EMPLOYEE_NAV_EN : EMPLOYEE_NAV_AR);
 
   async function handleLogout() {
     const client = getSupabaseClient();

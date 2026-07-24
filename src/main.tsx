@@ -6,18 +6,17 @@ import "./styles/fonts.css";
 
 import { LangProvider } from "./i18n/LangContext";
 
-
 const rootEl = document.getElementById("root")!;
 
-// Force RTL-by-default for Arabic-first UI.
+// Default to English (LTR). User can switch to Arabic (RTL) via LangToggle.
 if (typeof document !== "undefined") {
-  document.documentElement.setAttribute("dir", "rtl");
-  document.documentElement.setAttribute("lang", "ar");
+  document.documentElement.setAttribute("dir", "ltr");
+  document.documentElement.setAttribute("lang", "en");
 }
 
 ReactDOM.createRoot(rootEl).render(
   <React.StrictMode>
-    <LangProvider initialLang="ar">
+    <LangProvider initialLang="en">
       <App />
     </LangProvider>
   </React.StrictMode>

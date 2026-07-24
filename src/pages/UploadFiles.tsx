@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { C, STATUS_STYLE } from "../theme/tokens";
 import { DataState } from "../components/DataState";
 import { getSupabaseClient } from "../lib/supabaseClient";
+import { PageHeader, PageShell, SectionCard, StatCard } from "../components/AdminUI";
 
 type PreviewRow = {
   name: string;
@@ -141,16 +142,6 @@ export default function UploadFiles() {
     return () => window.clearTimeout(id);
   }, []);
 
-  const headerStyle = useMemo(
-    () => ({
-      background: C.surfaceHi,
-      border: `1px solid ${C.borderLo}`,
-      borderRadius: 14,
-      padding: "10px 12px",
-    }),
-    []
-  );
-
   async function handleFileChange(file: File) {
     setVariant("loading");
     setUploading(true);
@@ -164,7 +155,7 @@ export default function UploadFiles() {
         setValidation([
           {
             kind: "تنبيه",
-            message: "تم استلام ملف غير CSV. المعاينة الحالية تدعم CSV فقط، ويمكن رفع الملف إلى Supabase Storage عند توفر إعدادات البوCKET.",
+            message: "تم استلام ملف غير CSV. المعاينة الحالية تدعم CSV فقط، ويمكن رفع الملف إلى Supabase Storage عند توفر إعدادات الـ bucket.",
           },
         ]);
         setStatusMessage("تمت معاينة الملف محليًا");
@@ -254,167 +245,137 @@ export default function UploadFiles() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: C.bg, color: C.textHi, padding: 20 }}>
-      <div style={{ maxWidth: 1040, margin: "0 auto" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-          <div>
-            <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 900, fontSize: 22 }}>رفع الملفات</div>
-            <div style={{ color: C.textLo, fontSize: 12, marginTop: 6 }}>
-              دعم CSV محلي + رفع اختياري إلى Supabase Storage عند توفر إعدادات البوCKET.
-            </div>
+    <PageShell>
+      <PageHeader
+        title="رفع الملفات"
+        description="دعم CSV محلي مع رفع اختياري إلى Supabase Storage عند توفر إعدادات الـ bucket"
+        actions={<StatCard label="حالة المدقق" value={statusMessage} accent={C.lavender} />}
+      />
+
+      <DataState variant={variant} loading={<div />}>
+        <SectionCard title="معاينة الملف" description="اختر ملف CSV لعرض معاينة مباشرة ومراجعة تلقائية">
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 14 }}>
+            <label
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "10px 16px",
+                borderRadius: 14,
+                background: `linear-gradient(90deg, ${C.lavender}, ${C.pink})`,
+                color: C.bg,
+                fontWeight: 700,
+                fontSize: 12,
+                cursor: "pointer",
+                opacity: uploading ? 0.7 : 1,
+              }}
+            >
+              {uploading ? "جارٍ المعالجة…" : "اختيار الملف"}
+              <input
+                type="file"
+                accept=".csv,.xlsx,.xls"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    void handleFileChange(file);
+                  }
+                }}
+                style={{ display: "none" }}
+              />
+            </label>
           </div>
-          <div style={{ ...headerStyle, minWidth: 220, textAlign: "center" }}>
-            <div style={{ color: C.textLo, fontSize: 12, fontWeight: 800 }}>حالة المدقق</div>
-            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 900, fontSize: 18, marginTop: 6 }}>
-              {statusMessage}
-            </div>
-          </div>
-        </div>
 
-        <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "1fr", gap: 14 }}>
-          <DataState variant={variant} loading={<div />}>
-            <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, padding: 16 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-                <div>
-                  <div style={{ fontWeight: 900, color: C.textHi, fontSize: 14 }}>معاينة الملف</div>
-                  <div style={{ color: C.textLo, fontSize: 12, marginTop: 6 }}>
-                    اختر ملف CSV لعرض معاينة مباشرة ومراجعة تلقائية.
-                  </div>
-                </div>
-                <label
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    padding: "10px 12px",
-                    borderRadius: 14,
-                    background: `linear-gradient(135deg, ${C.lavender}, ${C.pink})`,
-                    color: "#0B0B14",
-                    fontWeight: 900,
-                    fontSize: 12,
-                    cursor: "pointer",
-                    opacity: uploading ? 0.7 : 1,
-                  }}
-                >
-                  {uploading ? "جارٍ المعالجة…" : "اختيار الملف"}
-                  <input
-                    type="file"
-                    accept=".csv,.xlsx,.xls"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        void handleFileChange(file);
-                      }
-                    }}
-                    style={{ display: "none" }}
-                  />
-                </label>
-              </div>
-
-              <div style={{ marginTop: 12, overflowX: "auto" }}>
-                {rows.length ? (
-                  <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 520 }}>
-                    <thead>
-                      <tr>
-                        {Object.keys(rows[0]).map((key) => (
-                          <th
-                            key={key}
-                            style={{
-                              textAlign: "right",
-                              padding: "10px 8px",
-                              fontSize: 12,
-                              color: C.textMid,
-                              borderBottom: `1px solid ${C.borderLo}`,
-                              whiteSpace: "nowrap",
-                            }}
-                          >
-                            {key}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {rows.map((r, idx) => (
-                        <tr key={idx}>
-                          <td style={{ padding: "10px 8px", borderBottom: `1px solid ${C.borderLo}`, color: C.textHi, fontSize: 13 }}>{r.name}</td>
-                          <td style={{ padding: "10px 8px", borderBottom: `1px solid ${C.borderLo}`, color: C.textHi, fontSize: 13 }}>{r.id}</td>
-                          <td style={{ padding: "10px 8px", borderBottom: `1px solid ${C.borderLo}`, color: C.textHi, fontSize: 13 }}>{r.dept}</td>
-                          <td style={{ padding: "10px 8px", borderBottom: `1px solid ${C.borderLo}`, color: C.textHi, fontSize: 13 }}>{r.email}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                ) : (
-                  <div style={{ color: C.textLo, fontSize: 12, lineHeight: 1.7 }}>
-                    لم يتم اختيار ملف بعد. اختر CSV لتجربة المعاينة والترقق.
-                  </div>
-                )}
-              </div>
-
-              <div style={{ marginTop: 14, display: "grid", gridTemplateColumns: "1fr", gap: 10 }}>
-                <div style={{ background: C.surfaceHi, border: `1px solid ${C.borderLo}`, borderRadius: 16, padding: 12 }}>
-                  <div style={{ fontWeight: 900, color: C.textHi, fontSize: 13 }}>التحقق من البيانات</div>
-                  <div style={{ marginTop: 10, display: "grid", gap: 10 }}>
-                    {validation.map((v, i) => {
-                      const isDup = v.kind.includes("مكرر");
-                      const s = isDup ? STATUS_STYLE["at-risk"] : STATUS_STYLE["watch"];
-                      return (
-                        <div
-                          key={i}
-                          style={{
-                            border: `1px solid ${C.borderLo}`,
-                            background: s.bg,
-                            borderRadius: 14,
-                            padding: 10,
-                          }}
-                        >
-                          <div style={{ color: s.text, fontWeight: 900, fontSize: 12 }}>{v.kind}</div>
-                          <div style={{ color: C.textLo, fontSize: 12, marginTop: 4, lineHeight: 1.6 }}>
-                            {v.message}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div style={{ background: C.surfaceHi, border: `1px solid ${C.borderLo}`, borderRadius: 16, padding: 12 }}>
-                  <div style={{ fontWeight: 900, color: C.textHi, fontSize: 13 }}>سجل الرفع</div>
-                  <div style={{ marginTop: 10, display: "grid", gap: 10 }}>
-                    {history.map((h) => (
-                      <div key={h.id} style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center" }}>
-                        <div>
-                          <div style={{ color: C.textMid, fontWeight: 900, fontSize: 12 }}>{h.fileName}</div>
-                          <div style={{ color: C.textLo, fontSize: 12, marginTop: 4 }}>{h.time}</div>
-                        </div>
-                        <div
-                          style={{
-                            border: `1px solid ${C.borderLo}`,
-                            background: C.surface,
-                            borderRadius: 999,
-                            padding: "7px 10px",
-                            fontWeight: 900,
-                            color: C.textHi,
-                            fontSize: 12,
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {h.status}
-                        </div>
-                      </div>
+          <div style={{ overflowX: "auto" }}>
+            {rows.length ? (
+              <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 520 }}>
+                <thead>
+                  <tr>
+                    {Object.keys(rows[0]).map((key) => (
+                      <th
+                        key={key}
+                        style={{
+                          textAlign: "right",
+                          padding: "10px 8px",
+                          fontSize: 12,
+                          color: C.textMid,
+                          borderBottom: `0.5px solid ${C.borderLo}`,
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {key}
+                      </th>
                     ))}
-                  </div>
-                </div>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((r, idx) => (
+                    <tr key={idx}>
+                      <td style={{ padding: "10px 8px", borderBottom: `0.5px solid ${C.borderLo}`, color: C.textHi, fontSize: 13 }}>{r.name}</td>
+                      <td style={{ padding: "10px 8px", borderBottom: `0.5px solid ${C.borderLo}`, color: C.textHi, fontSize: 13 }}>{r.id}</td>
+                      <td style={{ padding: "10px 8px", borderBottom: `0.5px solid ${C.borderLo}`, color: C.textHi, fontSize: 13 }}>{r.dept}</td>
+                      <td style={{ padding: "10px 8px", borderBottom: `0.5px solid ${C.borderLo}`, color: C.textHi, fontSize: 13 }}>{r.email}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div style={{ color: C.textLo, fontSize: 12, lineHeight: 1.7 }}>
+                لم يتم اختيار ملف بعد. اختر CSV لتجربة المعاينة والتدقيق.
+              </div>
+            )}
+          </div>
+
+          <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "1fr", gap: 10 }}>
+            <div style={{ background: C.surfaceHi, border: `0.5px solid ${C.borderLo}`, borderRadius: 16, padding: 14 }}>
+              <div style={{ fontWeight: 700, color: C.textHi, fontSize: 13 }}>التحقق من البيانات</div>
+              <div style={{ marginTop: 10, display: "grid", gap: 10 }}>
+                {validation.map((v, i) => {
+                  const isDup = v.kind.includes("مكرر");
+                  const s = isDup ? STATUS_STYLE["at-risk"] : STATUS_STYLE["watch"];
+                  return (
+                    <div key={i} style={{ border: `0.5px solid ${C.borderLo}`, background: s.bg, borderRadius: 14, padding: 10 }}>
+                      <div style={{ color: s.text, fontWeight: 700, fontSize: 12 }}>{v.kind}</div>
+                      <div style={{ color: C.textLo, fontSize: 12, marginTop: 4, lineHeight: 1.6 }}>{v.message}</div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
-          </DataState>
 
-          <div style={{ color: C.textLo, fontSize: 12, lineHeight: 1.7 }}>
-            ملاحظة: المعاينة الحالية تدعم CSV مباشرة، بينما رفع Excel يحتاج إلى مُحلّل إضافي أو إعداد Bucket في Supabase.
+            <div style={{ background: C.surfaceHi, border: `0.5px solid ${C.borderLo}`, borderRadius: 16, padding: 14 }}>
+              <div style={{ fontWeight: 700, color: C.textHi, fontSize: 13 }}>سجل الرفع</div>
+              <div style={{ marginTop: 10, display: "grid", gap: 10 }}>
+                {history.map((h) => (
+                  <div key={h.id} style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center" }}>
+                    <div>
+                      <div style={{ color: C.textMid, fontWeight: 700, fontSize: 12 }}>{h.fileName}</div>
+                      <div style={{ color: C.textLo, fontSize: 12, marginTop: 4 }}>{h.time}</div>
+                    </div>
+                    <div
+                      style={{
+                        border: `0.5px solid ${C.borderLo}`,
+                        background: C.surface,
+                        borderRadius: 999,
+                        padding: "7px 12px",
+                        fontWeight: 700,
+                        color: C.textHi,
+                        fontSize: 12,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {h.status}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
+        </SectionCard>
+
+        <div style={{ color: C.textLo, fontSize: 12, lineHeight: 1.7, marginTop: 4 }}>
+          ملاحظة: المعاينة الحالية تدعم CSV مباشرة، بينما رفع Excel يحتاج إلى مُحلّل إضافي أو إعداد bucket في Supabase.
         </div>
-      </div>
-    </div>
+      </DataState>
+    </PageShell>
   );
 }
-
