@@ -34,33 +34,33 @@ export default function AdminDashboard() {
   return (
     <PageShell>
       <PageHeader
-        title="لوحة الأدمن"
-        description="مؤشرات حقيقية من pulse_responses و points_ledger و critical_alerts"
-        actions={<GhostButton onClick={() => void handleLogout()}>تسجيل الخروج</GhostButton>}
+        title="Admin Dashboard"
+        description="Real indicators from pulse_responses, points_ledger, and critical_alerts"
+        actions={<GhostButton onClick={() => void handleLogout()}>Sign out</GhostButton>}
       />
 
       <DataState
         variant={sectionState}
-        loading={<div style={{ color: C.textLo, fontSize: 12 }}>جارٍ تجهيز لوحة الأدمن…</div>}
+        loading={<div style={{ color: C.textLo, fontSize: 12 }}>Loading admin dashboard…</div>}
         title=""
         description=""
       >
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          <SectionCard title="نظرة عامة">
+          <SectionCard title="Overview">
             <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0,1fr))", gap: 12 }}>
-              <StatCard label="نسبة المشاركة اليومية" value={`${snapshot?.participationRate ?? 0}%`} accent={C.lavender} />
-              <StatCard label="إجمالي النقاط الموزعة" value={snapshot?.totalPointsDistributed ?? 0} accent={C.pink} />
+              <StatCard label="Daily participation rate" value={`${snapshot?.participationRate ?? 0}%`} accent={C.lavender} />
+              <StatCard label="Total points distributed" value={snapshot?.totalPointsDistributed ?? 0} accent={C.pink} />
             </div>
           </SectionCard>
 
           <SectionCard
-            title="حالات تحتاج متابعة"
-            description="عدد الحالات غير المُحللة في critical_alerts مع تمييز لطيف بدل نصوص مزعجة"
+            title="Needs follow-up"
+            description="Unresolved cases in critical_alerts with gentle labeling instead of alarming text"
           >
-            <StatCard label="الحالات الحالية" value={snapshot?.followUpCount ?? 0} accent={C.amber} />
+            <StatCard label="Current cases" value={snapshot?.followUpCount ?? 0} accent={C.amber} />
           </SectionCard>
 
-          <SectionCard title="مؤشرات الاتجاه">
+          <SectionCard title="Trend notes">
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {(snapshot?.trendNotes ?? []).map((note, index) => (
                 <div

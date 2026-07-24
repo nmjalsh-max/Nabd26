@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { C } from "../theme/tokens";
 import LangToggle from "../components/LangToggle";
 import { useLang } from "../i18n/LangContext";
