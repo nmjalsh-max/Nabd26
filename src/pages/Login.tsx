@@ -1,10 +1,18 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { C } from "../theme/tokens";
+import { getSupabaseClient } from "../lib/supabaseClient";
 
 type Role = "employee" | "admin";
 
-// شعار القلب النابض — نفس الشعار المستخدم في Landing وAppShell
+const STORAGE_KEY = "mock_auth";
+
+// بيانات تجريبية للمعاينة المحلية — تطابق ما هو معروض في الواجهة
+const DEMO_ACCOUNTS: Record<string, { password: string; role: Role }> = {
+  emp1: { password: "1234", role: "employee" },
+  admin: { password: "1234", role: "admin" },
+};
+
 function HeartLogo({ size = 22 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 34 34">
@@ -25,26 +33,59 @@ function HeartLogo({ size = 22 }: { size?: number }) {
 }
 
 export default function Login() {
-  const navigate = useNavigate();
   const [role, setRole] = useState<Role>("employee");
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // اربط هذا مع نفس منطق تسجيل الدخول الحالي (Supabase Auth أو Mock Data)
-    if (!identifier || !password) {
+    setError("");
+
+    if (!identifier.trim() || !password) {
       setError("أدخل البريد أو رقم الموظف وكلمة المرور");
       return;
     }
-    setError("");
-    navigate(role === "employee" ? "/employee" : "/admin");
-  };
+
+    // 1) تحقق من الحسابات التجريبية أولاً (mock data)
+    const demo = DEMO_ACCOUNTS[identifier.trim().toLowerCase()];
+    if (demo && demo.password === password) {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ role: demo.role, userId: identifier.trim() })
+      );
+      // إعادة تحميل كاملة عشان BootContext يقرأ الجلسة الجديدة من localStorage
+      window.location.href = demo.role === "admin" ? "/admin" : "/employee";
+      return;
+    }
+
+    // 2) لو مو حساب تجريبي، جرّب Supabase Auth (يحتاج البريد الإلكتروني)
+    const client = getSupabaseClient();
+    if (!client) {
+      setError("بيانات الدخول غير صحيحة، وSupabase غير مُعدّ للتحقق من حسابات حقيقية");
+      return;
+    }
+
+    setLoading(true);
+    const { error: authError } = await client.auth.signInWithPassword({
+      email: identifier.trim(),
+      password,
+    });
+    setLoading(false);
+
+    if (authError) {
+      setError(authError.message || "بيانات الدخول غير صحيحة");
+      return;
+    }
+
+    // onAuthStateChange في BootProvider سيحدّث الدور تلقائيًا،
+    // نعمل إعادة تحميل لضمان استقرار الحالة قبل الدخول لصفحة محمية
+    window.location.href = "/";
+  }
 
   return (
     <div dir="rtl" style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Cairo', sans-serif" }}>
-      {/* Header */}
       <header
         style={{ borderBottom: `0.5px solid ${C.borderLo}` }}
         className="flex items-center justify-between px-6 py-4"
@@ -55,20 +96,8 @@ export default function Login() {
             Nabd Space
           </span>
         </div>
-        <div className="flex gap-2">
-          <button
-            style={{ background: C.surfaceHi, border: `0.5px solid ${C.border}`, color: C.textHi }}
-            className="rounded-full px-3 py-1 text-xs"
-          >
-            العربية
-          </button>
-          <button style={{ color: C.textLo }} className="rounded-full px-3 py-1 text-xs">
-            English
-          </button>
-        </div>
       </header>
 
-      {/* Login card */}
       <div className="flex justify-center px-6 py-10">
         <form
           onSubmit={handleSubmit}
@@ -84,7 +113,6 @@ export default function Login() {
             </p>
           </div>
 
-          {/* Role switch */}
           <div
             style={{ background: C.surfaceHi, border: `0.5px solid ${C.border}` }}
             className="flex rounded-xl p-1 mb-6"
@@ -106,7 +134,6 @@ export default function Login() {
             ))}
           </div>
 
-          {/* Identifier */}
           <label style={{ color: C.textMid }} className="block text-xs mb-1.5">
             البريد أو رقم الموظف
           </label>
@@ -118,7 +145,6 @@ export default function Login() {
             className="w-full rounded-xl px-3.5 py-2.5 text-sm mb-4 outline-none"
           />
 
-          {/* Password */}
           <label style={{ color: C.textMid }} className="block text-xs mb-1.5">
             كلمة المرور
           </label>
@@ -145,10 +171,16 @@ export default function Login() {
 
           <button
             type="submit"
-            style={{ background: `linear-gradient(90deg, ${C.lavender}, ${C.pink})`, color: C.bg }}
+            disabled={loading}
+            style={{
+              background: `linear-gradient(90deg, ${C.lavender}, ${C.pink})`,
+              color: C.bg,
+              opacity: loading ? 0.7 : 1,
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
             className="w-full rounded-xl py-3 text-sm font-bold mb-5"
           >
-            دخول ←
+            {loading ? "جارٍ الدخول…" : "دخول ←"}
           </button>
 
           <div style={{ borderTop: `0.5px solid ${C.borderLo}` }} className="pt-3 text-center">

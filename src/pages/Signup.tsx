@@ -1,8 +1,28 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { C } from "../theme/tokens";
 import { useLang } from "../i18n/LangContext";
 import { getSupabaseClient } from "../lib/supabaseClient";
+
+// شعار القلب النابض — نفس الشعار المستخدم في Landing وLogin وAppShell
+function HeartLogo({ size = 22 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 34 34">
+      <path
+        d="M17 25 C8 19 6 13 10 10 C13 8 16 10 17 13 C18 10 21 8 24 10 C28 13 26 19 17 25 Z"
+        fill={C.pink}
+      />
+      <path
+        d="M6 17 H12 L14 12 L18 22 L20 17 H28"
+        fill="none"
+        stroke={C.bg}
+        strokeWidth={1.3}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -70,177 +90,161 @@ export default function Signup() {
     navigate("/login");
   }
 
+  const isRTL = lang !== "en";
+
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: C.bg,
-        color: C.textHi,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 18,
-      }}
-    >
-      <div style={{ width: "100%", maxWidth: 520, display: "flex", flexDirection: "column", gap: 14 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
-          <div>
-            <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 900, fontSize: 22 }}>
+    <div dir={isRTL ? "rtl" : "ltr"} style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Cairo', sans-serif" }}>
+      {/* Header */}
+      <header
+        style={{ borderBottom: `0.5px solid ${C.borderLo}` }}
+        className="flex items-center justify-between px-6 py-4"
+      >
+        <div className="flex items-center gap-2">
+          <HeartLogo />
+          <span style={{ fontFamily: "'Sora', sans-serif", color: C.lavSoft }} className="font-bold text-sm">
+            Nabd Space
+          </span>
+        </div>
+        <div className="flex gap-2">
+          <span
+            style={{ background: C.surfaceHi, border: `0.5px solid ${C.border}`, color: C.textHi }}
+            className="rounded-full px-3 py-1 text-xs"
+          >
+            {isRTL ? "العربية" : "Arabic"}
+          </span>
+          <span style={{ color: C.textLo }} className="rounded-full px-3 py-1 text-xs">
+            {isRTL ? "English" : "English"}
+          </span>
+        </div>
+      </header>
+
+      {/* Signup card */}
+      <div className="flex justify-center px-6 py-10">
+        <form
+          onSubmit={submit}
+          style={{ background: C.surface, border: `0.5px solid ${C.border}` }}
+          className="rounded-2xl p-8 w-full max-w-sm"
+        >
+          <div className="text-center mb-6">
+            <p style={{ fontFamily: "'Sora', sans-serif", color: C.textHi }} className="text-lg font-bold mb-1">
               {lang === "en" ? "Create account" : "إنشاء حساب"}
-            </div>
-            <div style={{ color: C.textLo, fontSize: 12, marginTop: 4 }}>
+            </p>
+            <p style={{ color: C.textLo }} className="text-xs">
               {lang === "en" ? "Sign up with email & password" : "سجّل بالبريد وكلمة المرور"}
-            </div>
+            </p>
           </div>
-        </div>
 
-        <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, padding: 16 }}>
-          <form onSubmit={submit} className="flex flex-col gap-10">
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 6, justifyContent: "flex-start" }}>
-              {([
-                { r: "employee" as const, label: lang === "en" ? "Employee" : "موظف" },
-                { r: "admin" as const, label: lang === "en" ? "Admin" : "مدير" },
-              ] as const).map(({ r, label }) => (
-                <button
-                  key={r}
-                  type="button"
-                  onClick={() => {
-                    setRole(r);
-                    setError(null);
-                  }}
-                  style={{
-                    border: `1px solid ${role === r ? C.lavender : C.borderLo}`,
-                    background:
-                      role === r
-                        ? `linear-gradient(135deg, ${C.lavender}33, ${C.pink}22)`
-                        : "transparent",
-                    color: role === r ? C.lavSoft : C.textLo,
-                    borderRadius: 999,
-                    padding: "8px 12px",
-                    cursor: "pointer",
-                    fontWeight: 800,
-                    fontSize: 12,
-                  }}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-
-            {role === "employee" && (
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <label style={{ color: C.textMid, fontSize: 12 }}>
-                  {lang === "en" ? "Employee number" : "رقم الموظف"}
-                </label>
-                <input
-                  value={employeeNumber}
-                  onChange={(e) => setEmployeeNumber(e.target.value)}
-                  placeholder={lang === "en" ? "emp1" : "emp1"}
-                  style={{
-                    background: C.surfaceHi,
-                    border: `1px solid ${C.border}`,
-                    borderRadius: 12,
-                    padding: "11px 12px",
-                    outline: "none",
-                    color: C.textHi,
-                    fontSize: 13,
-                  }}
-                />
-              </div>
-            )}
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              <label style={{ color: C.textMid, fontSize: 12 }}>{lang === "en" ? "Email" : "البريد الإلكتروني"}</label>
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={lang === "en" ? "you@example.com" : "name@example.com"}
-                style={{
-                  background: C.surfaceHi,
-                  border: `1px solid ${C.border}`,
-                  borderRadius: 12,
-                  padding: "11px 12px",
-                  outline: "none",
-                  color: C.textHi,
-                  fontSize: 13,
-                }}
-              />
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              <label style={{ color: C.textMid, fontSize: 12 }}>{lang === "en" ? "Password" : "كلمة المرور"}</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder={lang === "en" ? "••••••" : "••••••"}
-                style={{
-                  background: C.surfaceHi,
-                  border: `1px solid ${C.border}`,
-                  borderRadius: 12,
-                  padding: "11px 12px",
-                  outline: "none",
-                  color: C.textHi,
-                  fontSize: 13,
-                }}
-              />
-            </div>
-
-            {error && (
-              <div
-                style={{
-                  background: "#2A0D0D",
-                  border: `1px solid ${C.red}55`,
-                  borderRadius: 12,
-                  padding: 12,
-                  color: C.red,
-                  fontSize: 12,
-                  lineHeight: 1.6,
-                }}
-              >
-                {error}
-              </div>
-            )}
-
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+          {/* Role switch */}
+          <div
+            style={{ background: C.surfaceHi, border: `0.5px solid ${C.border}` }}
+            className="flex rounded-xl p-1 mb-6"
+          >
+            {([
+              { r: "employee" as const, label: lang === "en" ? "Employee" : "موظف" },
+              { r: "admin" as const, label: lang === "en" ? "Admin" : "مدير" },
+            ] as const).map(({ r, label }) => (
               <button
+                key={r}
                 type="button"
-                onClick={() => navigate("/login")}
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: C.textLo,
-                  cursor: "pointer",
-                  fontSize: 12,
-                  padding: 0,
-                  fontWeight: 700,
+                onClick={() => {
+                  setRole(r);
+                  setError(null);
                 }}
+                style={
+                  role === r
+                    ? { background: `linear-gradient(90deg, ${C.lavender}, ${C.pink})`, color: C.bg }
+                    : { color: C.textMid }
+                }
+                className="flex-1 text-center rounded-lg py-2 text-xs font-bold"
               >
-                {lang === "en" ? "Back to login" : "العودة للدخول"}
+                {label}
               </button>
+            ))}
+          </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  background: `linear-gradient(135deg, ${C.lavender}, ${C.pink})`,
-                  border: "none",
-                  borderRadius: 14,
-                  padding: "10px 14px",
-                  fontWeight: 900,
-                  color: "#0B0B14",
-                  cursor: loading ? "not-allowed" : "pointer",
-                  minWidth: 160,
-                  opacity: loading ? 0.7 : 1,
-                }}
-              >
-                {loading ? (lang === "en" ? "Creating…" : "جارٍ الإنشاء…") : lang === "en" ? "Sign up" : "إنشاء حساب"} →
-              </button>
+          {/* Employee number */}
+          {role === "employee" && (
+            <>
+              <label style={{ color: C.textMid }} className="block text-xs mb-1.5">
+                {lang === "en" ? "Employee number" : "رقم الموظف"}
+              </label>
+              <input
+                value={employeeNumber}
+                onChange={(e) => setEmployeeNumber(e.target.value)}
+                placeholder="emp1"
+                style={{ background: C.bg, border: `0.5px solid ${C.border}`, color: C.textHi }}
+                className="w-full rounded-xl px-3.5 py-2.5 text-sm mb-4 outline-none"
+              />
+            </>
+          )}
+
+          {/* Email */}
+          <label style={{ color: C.textMid }} className="block text-xs mb-1.5">
+            {lang === "en" ? "Email" : "البريد الإلكتروني"}
+          </label>
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={lang === "en" ? "you@example.com" : "name@example.com"}
+            style={{ background: C.bg, border: `0.5px solid ${C.border}`, color: C.textHi }}
+            className="w-full rounded-xl px-3.5 py-2.5 text-sm mb-4 outline-none"
+          />
+
+          {/* Password */}
+          <label style={{ color: C.textMid }} className="block text-xs mb-1.5">
+            {lang === "en" ? "Password" : "كلمة المرور"}
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••"
+            style={{ background: C.bg, border: `0.5px solid ${C.border}`, color: C.textHi }}
+            className="w-full rounded-xl px-3.5 py-2.5 text-sm mb-2 outline-none"
+          />
+
+          {error && (
+            <div
+              style={{ background: "#2A0D0D", border: `0.5px solid ${C.red}55`, color: C.red }}
+              className="rounded-xl p-3 text-xs leading-relaxed mb-4 mt-2"
+            >
+              {error}
             </div>
-          </form>
-        </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              background: `linear-gradient(90deg, ${C.lavender}, ${C.pink})`,
+              color: C.bg,
+              opacity: loading ? 0.7 : 1,
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
+            className="w-full rounded-xl py-3 text-sm font-bold mb-5 mt-3"
+          >
+            {loading ? (lang === "en" ? "Creating…" : "جارٍ الإنشاء…") : lang === "en" ? "Sign up" : "إنشاء حساب"} ←
+          </button>
+
+          <div style={{ borderTop: `0.5px solid ${C.borderLo}` }} className="pt-3 text-center">
+            <button
+              type="button"
+              onClick={() => navigate("/login")}
+              style={{ color: C.textLo, background: "none", border: "none" }}
+              className="text-xs cursor-pointer"
+            >
+              {lang === "en" ? "Back to login" : "العودة للدخول"}
+            </button>
+          </div>
+
+          <p style={{ color: C.textLo }} className="text-xs text-center mt-4">
+            {lang === "en" ? "Already have an account?" : "لديك حساب؟"}{" "}
+            <Link to="/login" style={{ color: C.lavSoft }}>
+              {lang === "en" ? "Log in" : "تسجيل الدخول"}
+            </Link>
+          </p>
+        </form>
       </div>
     </div>
   );
 }
-
