@@ -392,54 +392,117 @@ Landing Page → Login (admin/1234) → Admin Dashboard
 
 ## 📸 System Screenshots
 
-### 1. Landing Page
-- **Content**: Nabd heart logo + title + description + action buttons (Login / Signup)
-- **Features**: Cards for Daily Pulse, Supportive Follow-up, Rewards
-- **Roles Section**: Employee ↔ Admin visual toggle
+> The following screenshots were captured directly from the running application. All pages use **mock data** and are fully interactive without any backend setup.
 
-### 2. Login Page
-- **Role Selection**: Employee / Admin toggle
-- **Credentials**: emp1 / 1234 or admin / 1234
-- **Dual Auth**: Supabase Auth OR local demo accounts
+---
 
-### 3. Employee Dashboard
-- **Morale Status**: Daily completion percentage + supportive status label
-- **Points Balance**: Progress bar + current balance + next threshold
+### 1. Landing Page 🏠
+The marketing homepage featuring the Nabd heart logo, a brief description, and action buttons for Login / Signup. It also displays feature cards (Daily Pulse, Supportive Follow-up, Rewards) and a roles section for Employee / Admin.
+
+![Landing Page](./screenshots/01-landing.png)
+
+---
+
+### 2. Login Page 🔐
+Authentication page with a role toggle (Employee / Admin). Users can log in with demo credentials (`emp1/1234` for employee, `admin/1234` for admin) or via Supabase Auth when configured.
+
+![Login Page](./screenshots/02-login.png)
+
+---
+
+### 3. Employee Dashboard 👤
+The main employee overview showing:
+- **Morale Status**: Daily completion percentage with a supportive status label
+- **Points Balance**: Progress bar with current balance and next threshold
 - **Upcoming Sessions**: Session cards with direct booking
 - **Latest Notifications**: Notification feed
 
-### 4. Admin Dashboard
-- **Overview**: Daily participation rate + total points distributed
-- **Follow-up**: Critical cases count with gentle labeling
-- **Trend Notes**: Quick analysis notes
+![Employee Dashboard](./screenshots/03-employee-dashboard.png)
 
-### 5. Mood Check-in
-- 5 questions (energy, stress, focus, support, mood)
-- Each question: Rating from 1 to 5
-- Progress bar + points earned indicator (25 points)
-- Duplicate prevention (once per day)
+---
 
-### 6. Points & Rewards
-- Progress bar: Current balance vs threshold (500 points)
-- Transaction ledger: All point changes with timestamps
-- Badges: Rewards at 300, 400, 500 points
+### 4. Mood Check-in (Daily Pulse) 📝
+5 simple questions about energy, stress, focus, support, and mood with a 1–5 rating scale. Includes a progress bar, 25-point reward on completion, and duplicate prevention (once per day).
 
-### 7. Sessions Calendar
-- Available sessions list (title, time, coach, available seats)
-- Book button (available for logged-in employees)
-- Add new session form (admin only)
+![Mood Questions](./screenshots/04-mood-questions.png)
 
-### 8. Reports
-- **Filters**: Weekly / Monthly / Yearly
-- **Summary**: Employee count + average mood + follow-up cases
-- **Table**: Departments with average score & status
-- **Export**: PDF + CSV download
+---
 
-### 9. Analytics
-- **Trend Line**: Line Chart for last 7 days
-- **Department Comparison**: Bar Chart
+### 5. Points & Rewards ⭐
+Shows the progress bar (current balance vs. 500-point threshold), transaction ledger with timestamps, and badge rewards unlocked at 300, 400, and 500 points.
+
+![Points & Rewards](./screenshots/05-points-rewards.png)
+
+---
+
+### 6. Sessions Calendar 📅
+Lists available yoga/meditation sessions with details (title, time, coach, available seats). Employees can book directly; admins can add new sessions via a form.
+
+![Sessions Calendar](./screenshots/06-sessions-calendar.png)
+
+---
+
+### 7. Notifications 🔔
+In-app notification feed showing system alerts (reminders, session bookings, rewards unlocked) with read/unread status.
+
+![Notifications](./screenshots/07-notifications.png)
+
+---
+
+### 8. Admin Dashboard 👑
+Admin KPI dashboard displaying:
+- Daily participation rate
+- Total points distributed
+- Follow-up cases (critical alerts)
+- Trend notes with quick insights
+
+![Admin Dashboard](./screenshots/08-admin-dashboard.png)
+
+---
+
+### 9. Reports 📊
+Filterable reports (Weekly / Monthly / Yearly) with:
+- Summary cards (employee count, average mood, follow-up cases)
+- Department comparison table with status badges
+- PDF and CSV export functionality
+
+![Reports](./screenshots/09-reports.png)
+
+---
+
+### 10. Analytics 📈
+Data visualization dashboard with:
+- **Line Chart**: 7-day mood trend
+- **Bar Chart**: Department comparison scores
+- **Pie Chart**: Department status distribution
 - **Auto-classification**: Employee cards with status badges
-- **Department Status**: Pie Chart distribution
+
+![Analytics](./screenshots/10-analytics.png)
+
+---
+
+### 11. Analytics — Compare 📊
+Secondary analytics page focused on department comparison and alternate data visualizations.
+
+![Analytics Compare](./screenshots/11-analytics-compare.png)
+
+---
+
+### 12. Upload Files 📁
+Admin page for uploading employee CSV files. Supports bulk data import with processing status tracking.
+
+![Upload Files](./screenshots/12-upload-files.png)
+
+---
+
+### 13. Signup Page 📝
+New user registration page where employees and admins can create accounts.
+
+![Signup Page](./screenshots/13-signup.png)
+
+---
+
+> 💡 **Note**: All screenshots were captured at 1440×900 viewport resolution. The dark theme with lavender/pink color palette is consistent across all pages.
 
 ---
 
