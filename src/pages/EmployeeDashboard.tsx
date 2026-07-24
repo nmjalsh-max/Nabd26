@@ -39,11 +39,9 @@ export default function EmployeeDashboard() {
     <div style={{ minHeight: "100vh", background: C.bg, color: C.textHi, padding: 20 }}>
       <div style={{ maxWidth: 1040, margin: "0 auto" }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-          <div>
-
-            <div style={{ color: C.textLo, fontSize: 12, marginTop: 6 }}>
-              Real data from Supabase when configured, with Mock fallback otherwise.
-            </div>
+          <div style={{ color: C.textLo, fontSize: 12, marginTop: 6 }}>
+            Real data from Supabase when configured, with Mock fallback otherwise.
+          </div>
           <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
             <button
               type="button"
@@ -62,6 +60,7 @@ export default function EmployeeDashboard() {
               Sign out
             </button>
           </div>
+        </div>
 
         <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "1fr", gap: 14 }}>
           <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, padding: 16 }}>
@@ -79,13 +78,17 @@ export default function EmployeeDashboard() {
                     <div style={{ color: C.textLo, fontSize: 12 }}>Today progress</div>
                     <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 900, fontSize: 34 }}>{snapshot?.completion ? 100 : 0}%</div>
                     <div style={{ color: C.textLo, fontSize: 12, marginTop: 2 }}>Daily survey</div>
+                  </div>
                   <div style={{ minWidth: 160 }}>
                     <div style={{ background: status.bg, border: `1px solid ${C.borderLo}`, borderRadius: 16, padding: 12 }}>
                       <div style={{ color: status.text, fontWeight: 900, fontSize: 12 }}>Supportive status</div>
                       <div style={{ color: C.textMid, fontSize: 12, marginTop: 6 }}>{status.label}</div>
+                    </div>
                   </div>
+                </div>
               </DataState>
             </div>
+          </div>
 
           <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, padding: 16 }}>
             <div style={{ fontWeight: 900, color: C.textHi, fontSize: 14 }}>Points balance</div>
@@ -99,12 +102,15 @@ export default function EmployeeDashboard() {
                   <div>
                     <div style={{ color: C.textLo, fontSize: 12 }}>Current</div>
                     <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 900, fontSize: 26 }}>{snapshot?.pointsBalance ?? 0}</div>
+                  </div>
                   <div>
                     <div style={{ color: C.textLo, fontSize: 12 }}>Next threshold</div>
                     <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 900, fontSize: 26 }}>{snapshot?.nextThreshold ?? 0}</div>
+                  </div>
                 </div>
               </DataState>
             </div>
+          </div>
 
           <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, padding: 16 }}>
             <div style={{ fontWeight: 900, color: C.textHi, fontSize: 14 }}>Upcoming sessions</div>
@@ -119,8 +125,10 @@ export default function EmployeeDashboard() {
                   <div style={{ color: C.textLo, fontSize: 12, marginTop: 6, lineHeight: 1.6 }}>
                     {s.time} - {s.mode} - {s.coach}
                   </div>
+                </div>
               ))}
             </div>
+          </div>
 
           <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, padding: 16 }}>
             <div style={{ fontWeight: 900, color: C.textHi, fontSize: 14 }}>Latest notifications</div>
@@ -132,11 +140,15 @@ export default function EmployeeDashboard() {
                     <div style={{ color: C.textMid, fontWeight: 900, fontSize: 12 }}>{n.type}</div>
                     <div style={{ color: C.textHi, fontWeight: 900, fontSize: 13, marginTop: 4 }}>{n.title}</div>
                     <div style={{ color: C.textLo, fontSize: 12, marginTop: 4 }}>{n.time}</div>
+                  </div>
                   <div style={{ width: 10, height: 10, borderRadius: 999, background: n.unread ? C.lavender : C.borderLo, alignSelf: "flex-start", marginTop: 4 }} />
                 </div>
               ))}
             </div>
+          </div>
         </div>
+      </div>
     </div>
   );
 }
+
