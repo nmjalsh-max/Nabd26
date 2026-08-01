@@ -79,7 +79,7 @@ export default function EmployeeDashboard() {
                 <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between", gap: 12 }}>
                   <div>
                     <div style={{ color: C.textLo, fontSize: 12 }}>Today progress</div>
-                    <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 900, fontSize: 34 }}>{snapshot?.completion ? 100 : 0}%</div>
+<div style={{ fontFamily: "var(--font-mono)", fontWeight: 900, fontSize: 34 }}>{snapshot?.completion ? 100 : 0}%</div>
                     <div style={{ color: C.textLo, fontSize: 12, marginTop: 2 }}>Daily survey</div>
                   </div>
                   <div style={{ minWidth: 160 }}>
@@ -104,11 +104,11 @@ export default function EmployeeDashboard() {
                 <div style={{ display: "flex", justifyContent: "space-between", marginTop: 10, gap: 12, flexWrap: "wrap" }}>
                   <div>
                     <div style={{ color: C.textLo, fontSize: 12 }}>Current</div>
-                    <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 900, fontSize: 26 }}>{snapshot?.pointsBalance ?? 0}</div>
+<div style={{ fontFamily: "var(--font-mono)", fontWeight: 900, fontSize: 26 }}>{snapshot?.pointsBalance ?? 0}</div>
                   </div>
                   <div>
                     <div style={{ color: C.textLo, fontSize: 12 }}>Next threshold</div>
-                    <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 900, fontSize: 26 }}>{snapshot?.nextThreshold ?? 0}</div>
+<div style={{ fontFamily: "var(--font-mono)", fontWeight: 900, fontSize: 26 }}>{snapshot?.nextThreshold ?? 0}</div>
                   </div>
                 </div>
               </DataState>

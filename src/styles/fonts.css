@@ -1,17 +1,25 @@
 /* ============================================================
    Nabd Space — Fonts
-   هدف التحسين: خطوط عربية واضحة + أرقام أحادية العرض
+   خطوط عربية + خطوط لاتينية منفصلة حسب اللغة
+   - عند العربية: Tajawal للنصوص + Cairo للعناوين
+   - عند الإنجليزية: Inter للنصوص + Sora للعناوين
+   - JetBrains Mono للأرقام في الحالتين
    ============================================================ */
 
-/* طبقة الويب للخط العربي (Cairo/Tajawal) + خط الأرقام (JetBrains Mono) + Sora للعناوين اللاتينية */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-/* --- الخطوط داخل التطبيق --- */
-:root {
+/* الوضع العربي (افتراضي) */
+:root,
+[lang='ar'] {
   --font-ui: 'Tajawal', 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
-  --font-ar-primary: 'Tajawal', 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
-  --font-ar-heading: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, Arial, sans-serif;
-  --font-latin-heading: 'Sora', 'Segoe UI', Tahoma, sans-serif;
+  --font-heading: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+/* الوضع الإنجليزي */
+[lang='en'] {
+  --font-ui: 'Inter', 'Segoe UI', Tahoma, Arial, sans-serif;
+  --font-heading: 'Sora', 'Segoe UI', Tahoma, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 }
 

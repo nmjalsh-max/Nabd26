@@ -87,14 +87,14 @@ export default function Login() {
   }
 
   return (
-    <div dir="rtl" style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Cairo', sans-serif" }}>
+    <div dir="rtl" style={{ background: C.bg, minHeight: "100vh", fontFamily: "var(--font-ui)" }}>
       <header
         style={{ borderBottom: `0.5px solid ${C.borderLo}` }}
         className="flex items-center justify-between px-6 py-4"
       >
         <div className="flex items-center gap-2">
           <HeartLogo />
-          <span style={{ fontFamily: "'Sora', sans-serif", color: C.lavSoft }} className="font-bold text-sm">
+          <span style={{ fontFamily: "var(--font-heading)", color: C.lavSoft }} className="font-bold text-sm">
             Nabd Space
           </span>
         </div>
@@ -107,7 +107,7 @@ export default function Login() {
           className="rounded-2xl p-8 w-full max-w-sm"
         >
           <div className="text-center mb-6">
-            <p style={{ fontFamily: "'Sora', sans-serif", color: C.textHi }} className="text-lg font-bold mb-1">
+            <p style={{ fontFamily: "var(--font-heading)", color: C.textHi }} className="text-lg font-bold mb-1">
               تسجيل الدخول
             </p>
             <p style={{ color: C.textLo }} className="text-xs">
@@ -189,7 +189,7 @@ export default function Login() {
             <p style={{ color: C.textLo }} className="text-[11px] leading-relaxed">
               يستخدم Supabase Auth للدخول، أو بيانات تجريبية للمعاينة المحلية
             </p>
-            <p style={{ color: C.lavDim, fontFamily: "'JetBrains Mono', monospace" }} className="text-[10px] mt-1">
+            <p style={{ color: C.lavDim, fontFamily: "var(--font-mono)" }} className="text-[10px] mt-1">
               emp1 / 1234 — admin / 1234
             </p>
           </div>

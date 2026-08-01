@@ -25,7 +25,7 @@ export function PageHeader({
       }}
     >
       <div>
-        <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 700, fontSize: FONT.xxl, color: C.textHi }}>
+<div style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: FONT.xxl, color: C.textHi }}>
           {title}
         </div>
         {description && (
@@ -58,7 +58,7 @@ export function SectionCard({
       }}
     >
       {title && (
-        <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 700, color: C.textHi, fontSize: FONT.lg }}>
+        <div style={{ fontFamily: "var(--font-heading)", fontWeight: 700, color: C.textHi, fontSize: FONT.lg }}>
           {title}
         </div>
       )}
@@ -108,7 +108,7 @@ export function StatCard({
       <div style={{ color: C.textLo, fontSize: FONT.xs, position: "relative" }}>{label}</div>
       <div
         style={{
-          fontFamily: "'JetBrains Mono',monospace",
+fontFamily: "var(--font-mono)",
           fontWeight: 700,
           fontSize: 26,
           marginTop: 8,

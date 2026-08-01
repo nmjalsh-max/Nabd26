@@ -42,7 +42,7 @@ export default function Landing() {
   const features = isEn ? featuresEn : featuresAr;
 
   return (
-    <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Cairo', sans-serif" }}>
+    <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "var(--font-ui)" }}>
       {/* Header */}
       <header
         style={{ borderBottom: `0.5px solid ${C.borderLo}` }}
@@ -50,7 +50,7 @@ export default function Landing() {
       >
         <div className="flex items-center gap-2">
           <HeartLogo color={C.pink} stroke={C.bg} />
-          <span style={{ fontFamily: "'Sora', sans-serif", color: C.lavSoft }} className="font-bold text-base">
+          <span style={{ fontFamily: "var(--font-heading)", color: C.lavSoft }} className="font-bold text-base">
             Nabd Space
           </span>
         </div>
@@ -71,7 +71,7 @@ export default function Landing() {
           <HeartLogo size={64} color={C.pink} stroke={C.bg} />
         </div>
         <h1
-          style={{ fontFamily: "'Sora', sans-serif", color: C.lavSoft }}
+          style={{ fontFamily: "var(--font-heading)", color: C.lavSoft }}
           className="text-4xl font-bold mb-3"
         >
           {isEn ? "Nabd Space" : "نبض"}
@@ -118,7 +118,7 @@ export default function Landing() {
             >
               {f.icon}
             </div>
-            <p style={{ fontFamily: "'Sora', sans-serif", color: C.textHi }} className="text-sm mb-1">
+            <p style={{ fontFamily: "var(--font-heading)", color: C.textHi }} className="text-sm mb-1">
               {f.title}
             </p>
             <p style={{ color: C.textLo }} className="text-xs leading-relaxed">
@@ -134,7 +134,7 @@ export default function Landing() {
           style={{ background: C.surfaceHi, border: `0.5px solid ${C.border}` }}
           className="rounded-2xl p-6 text-center"
         >
-          <p style={{ fontFamily: "'Sora', sans-serif", color: C.textHi }} className="text-sm mb-1">
+          <p style={{ fontFamily: "var(--font-heading)", color: C.textHi }} className="text-sm mb-1">
             {isEn ? "I'm an Employee" : "أنا موظف"}
           </p>
           <p style={{ color: C.textLo }} className="text-xs">
@@ -145,7 +145,7 @@ export default function Landing() {
           style={{ background: C.surfaceHi, border: `0.5px solid ${C.border}` }}
           className="rounded-2xl p-6 text-center"
         >
-          <p style={{ fontFamily: "'Sora', sans-serif", color: C.textHi }} className="text-sm mb-1">
+          <p style={{ fontFamily: "var(--font-heading)", color: C.textHi }} className="text-sm mb-1">
             {isEn ? "I'm an Admin" : "أنا أدمن"}
           </p>
           <p style={{ color: C.textLo }} className="text-xs">

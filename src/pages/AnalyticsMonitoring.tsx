@@ -73,7 +73,7 @@ export default function AnalyticsMonitoring() {
                   <div style={{ marginTop: 10 }}>
                     <StatusPill tone={statusTone(item.status)}>{item.status}</StatusPill>
                   </div>
-                  <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 700, fontSize: 20, marginTop: 10, color: C.textHi }}>
+                  <div style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 20, marginTop: 10, color: C.textHi }}>
                     {item.average.toFixed(1)}
                   </div>
                 </div>

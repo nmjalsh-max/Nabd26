@@ -81,7 +81,7 @@ export default function MoodQuestions() {
       <div style={{ maxWidth: 1040, margin: "0 auto" }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div>
-            <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 900, fontSize: 22 }}>أسئلة المعنويات</div>
+            <div style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: 22 }}>أسئلة المعنويات</div>
             <div style={{ color: C.textLo, fontSize: 12, marginTop: 6 }}>مقياس يومي من 5 أسئلة — تخزين فعلي مع منع التكرار</div>
           </div>
           <div style={{ width: 260, borderRadius: 16, border: `1px solid ${C.border}`, background: C.surface, padding: 12 }}>
@@ -90,7 +90,7 @@ export default function MoodQuestions() {
               <div style={{ flex: 1, height: 10, borderRadius: 999, background: C.surfaceHi, border: `1px solid ${C.borderLo}`, overflow: "hidden" }}>
                 <div style={{ height: "100%", width: `${progress}%`, background: `linear-gradient(90deg, ${C.lavender}, ${C.pink})` }} />
               </div>
-              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 900, color: C.textMid, fontSize: 12 }}>{progress}%</div>
+<div style={{ fontFamily: "var(--font-mono)", fontWeight: 900, color: C.textMid, fontSize: 12 }}>{progress}%</div>
             </div>
             <div style={{ marginTop: 8, color: C.textLo, fontSize: 12 }}>{status}</div>
           </div>
@@ -103,7 +103,7 @@ export default function MoodQuestions() {
           >
             {completed ? (
               <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, padding: 24, textAlign: "center" }}>
-                <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 900, fontSize: 24 }}>شكراً لك!</div>
+                <div style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: 24 }}>شكراً لك!</div>
                 <div style={{ color: C.textLo, fontSize: 13, marginTop: 8 }}>{status}</div>
                 <div style={{ color: C.textMid, fontSize: 12, marginTop: 10 }}>تمت إضافة {pointsEarned} نقطة إلى رصيدك.</div>
                 <button

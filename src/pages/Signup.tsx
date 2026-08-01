@@ -95,7 +95,7 @@ export default function Signup() {
   const isRTL = lang !== "en";
 
   return (
-    <div dir={isRTL ? "rtl" : "ltr"} style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Cairo', sans-serif" }}>
+    <div dir={isRTL ? "rtl" : "ltr"} style={{ background: C.bg, minHeight: "100vh", fontFamily: "var(--font-ui)" }}>
       {/* Header */}
       <header
         style={{ borderBottom: `0.5px solid ${C.borderLo}` }}
@@ -103,7 +103,7 @@ export default function Signup() {
       >
         <div className="flex items-center gap-2">
           <HeartLogo />
-          <span style={{ fontFamily: "'Sora', sans-serif", color: C.lavSoft }} className="font-bold text-sm">
+          <span style={{ fontFamily: "var(--font-heading)", color: C.lavSoft }} className="font-bold text-sm">
             Nabd Space
           </span>
         </div>
@@ -128,7 +128,7 @@ export default function Signup() {
           className="rounded-2xl p-8 w-full max-w-sm"
         >
           <div className="text-center mb-6">
-            <p style={{ fontFamily: "'Sora', sans-serif", color: C.textHi }} className="text-lg font-bold mb-1">
+            <p style={{ fontFamily: "var(--font-heading)", color: C.textHi }} className="text-lg font-bold mb-1">
               {lang === "en" ? "Create account" : "إنشاء حساب"}
             </p>
             <p style={{ color: C.textLo }} className="text-xs">

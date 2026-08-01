@@ -104,12 +104,12 @@ export default function SessionsCalendar() {
       <div style={{ maxWidth: 1040, margin: "0 auto" }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div>
-            <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 900, fontSize: 22 }}>تقويم الجلسات</div>
+            <div style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: 22 }}>تقويم الجلسات</div>
             <div style={{ color: C.textLo, fontSize: 12, marginTop: 6 }}>جلسات من `yoga_sessions` + حجز فعلي عبر `session_attendance`</div>
           </div>
           <div style={{ width: 220, borderRadius: 16, border: `1px solid ${C.border}`, background: C.surface, padding: 12, textAlign: "center" }}>
             <div style={{ color: C.textLo, fontSize: 12, fontWeight: 800 }}>عدد الجلسات</div>
-            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 900, color: C.textMid, fontSize: 14, marginTop: 6 }}>{dayCount}</div>
+<div style={{ fontFamily: "var(--font-mono)", fontWeight: 900, color: C.textMid, fontSize: 14, marginTop: 6 }}>{dayCount}</div>
           </div>
         </div>
 

@@ -78,6 +78,11 @@ body {
   min-height: 100vh;
 }
 
+/* العناوين — تتغير حسب اللغة عبر المتغير */
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: var(--font-heading);
+}
+
 * {
   box-sizing: border-box;
 }

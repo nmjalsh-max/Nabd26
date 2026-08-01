@@ -74,7 +74,7 @@ export default function Leaves() {
               }}
             >
               <div style={{ color: C.textLo, fontSize: 12 }}>{s.label}</div>
-              <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 900, fontSize: 24, marginTop: 6, color: s.color }}>
+<div style={{ fontFamily: "var(--font-mono)", fontWeight: 900, fontSize: 24, marginTop: 6, color: s.color }}>
                 {s.value}
               </div>
             </div>

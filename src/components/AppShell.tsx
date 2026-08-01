@@ -93,7 +93,7 @@ export function AppShell({ children, role }: { children: React.ReactNode; role?:
                   background: C.surface,
                   borderRadius: 16,
                   padding: "10px 12px",
-                  fontFamily: "'Sora',sans-serif",
+                  fontFamily: "var(--font-heading)",
                   fontWeight: 900,
                   color: C.lavSoft,
                 }}

@@ -41,7 +41,7 @@ export function Modal({ open, title, description, onClose, children }: ModalProp
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 900, fontSize: 18, color: C.textHi }}>{title}</div>
+        <div style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: 18, color: C.textHi }}>{title}</div>
         {description ? (
           <div style={{ marginTop: 6, color: C.textLo, fontSize: 12, lineHeight: 1.7 }}>{description}</div>
         ) : null}

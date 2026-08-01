@@ -29,12 +29,12 @@ export default function PointsRewards() {
       <div style={{ maxWidth: 1040, margin: "0 auto" }}>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div>
-            <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 900, fontSize: 22 }}>النقاط & المكافآت</div>
+            <div style={{ fontFamily: "var(--font-heading)", fontWeight: 900, fontSize: 22 }}>النقاط & المكافآت</div>
             <div style={{ color: C.textLo, fontSize: 12, marginTop: 6 }}>رصيد فعلي + مكافآت عند الوصول للعتبات</div>
           </div>
           <div style={{ width: 220, borderRadius: 16, border: `1px solid ${C.border}`, background: C.surface, padding: 12, textAlign: "center" }}>
             <div style={{ color: C.textLo, fontSize: 12, fontWeight: 800 }}>العتبة التالية</div>
-            <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 900, color: C.textMid, fontSize: 14, marginTop: 6 }}>
+<div style={{ fontFamily: "var(--font-mono)", fontWeight: 900, color: C.textMid, fontSize: 14, marginTop: 6 }}>
               {snapshot?.nextThreshold ?? 0}
             </div>
           </div>
@@ -56,11 +56,11 @@ export default function PointsRewards() {
                 <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", marginTop: 12 }}>
                   <div>
                     <div style={{ color: C.textLo, fontSize: 12 }}>حاليًا</div>
-                    <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 900, fontSize: 26 }}>{snapshot?.currentPoints ?? 0}</div>
+<div style={{ fontFamily: "var(--font-mono)", fontWeight: 900, fontSize: 26 }}>{snapshot?.currentPoints ?? 0}</div>
                   </div>
                   <div>
                     <div style={{ color: C.textLo, fontSize: 12 }}>المتبقي</div>
-                    <div style={{ fontFamily: "'JetBrains Mono',monospace", fontWeight: 900, fontSize: 26 }}>
+                    <div style={{ fontFamily: "var(--font-mono)", fontWeight: 900, fontSize: 26 }}>
                       {Math.max(0, (snapshot?.nextThreshold ?? 0) - (snapshot?.currentPoints ?? 0))}
                     </div>
                   </div>

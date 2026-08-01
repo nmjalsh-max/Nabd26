@@ -22,12 +22,15 @@ export default {
         textMid: "var(--nabd-text-mid)",
         textLo: "var(--nabd-text-lo)",
       },
-fontFamily: {
-        sora: ["Sora", "Cairo", "sans-serif"],
-        cairo: ["Cairo", "sans-serif"],
-        tajawal: ["Tajawal", "Cairo", "sans-serif"],
-        inter: ["Inter", "Cairo", "sans-serif"],
-        mono: ["JetBrains Mono", "monospace"],
+      fontFamily: {
+        // كل هذه الأسماء تُحلّ لاحقًا عبر CSS vars حسب اللغة (عربي/إنجليزي)
+        heading: ["var(--font-heading)"],
+        ui: ["var(--font-ui)"],
+        sora: ["var(--font-heading)"],
+        cairo: ["var(--font-heading)"],
+        tajawal: ["var(--font-ui)"],
+        inter: ["var(--font-ui)"],
+        mono: ["var(--font-mono)"],
       },
       fontSize: {
         xxs: ["11px", { lineHeight: "1.4" }],
