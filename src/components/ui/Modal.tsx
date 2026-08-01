@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { C } from "../../theme/tokens";
+import { useTheme } from "../../theme/ThemeContext";
 
 type ModalProps = {
   open: boolean;
@@ -10,6 +10,7 @@ type ModalProps = {
 };
 
 export function Modal({ open, title, description, onClose, children }: ModalProps) {
+  const { theme: C } = useTheme();
   if (!open) return null;
 
   return (
@@ -24,7 +25,7 @@ export function Modal({ open, title, description, onClose, children }: ModalProp
         alignItems: "center",
         justifyContent: "center",
         padding: 18,
-        background: "rgba(5, 7, 18, 0.72)",
+        background: C.modalOverlay,
       }}
       onClick={onClose}
     >
@@ -36,7 +37,7 @@ export function Modal({ open, title, description, onClose, children }: ModalProp
           border: `1px solid ${C.border}`,
           borderRadius: 18,
           padding: 18,
-          boxShadow: "0 24px 80px rgba(0, 0, 0, 0.38)",
+          boxShadow: C.shadow,
         }}
         onClick={(e) => e.stopPropagation()}
       >

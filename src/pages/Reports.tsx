@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { C } from "../theme/tokens";
+import { useTheme } from "../theme/ThemeContext";
 import { DataState } from "../components/DataState";
 import { buildReportCsv, buildReportPdf, getReportsSnapshot, type ReportPeriod, type ReportRow } from "../lib/dashboardData";
 import { PageHeader, PageShell, SectionCard, StatCard, StatusPill, GhostButton } from "../components/AdminUI";
@@ -11,6 +11,7 @@ function statusTone(status: ReportRow["status"]): "green" | "amber" | "red" {
 }
 
 export default function Reports() {
+  const { theme: C } = useTheme();
   const [variant, setVariant] = useState<"loading" | "data" | "empty">("loading");
   const [period, setPeriod] = useState<ReportPeriod>("weekly");
   const [rows, setRows] = useState<ReportRow[]>([]);

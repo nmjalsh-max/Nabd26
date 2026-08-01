@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { C } from "../theme/tokens";
+import { useTheme } from "../theme/ThemeContext";
 import { DataState } from "../components/DataState";
 import { DAILY_MOOD_QUESTIONS, saveDailyMoodAnswers, hasCompletedDailyMoodForUser } from "../lib/dashboardData";
 import { getSupabaseClient } from "../lib/supabaseClient";
 
 export default function MoodQuestions() {
   const navigate = useNavigate();
+  const { theme: C } = useTheme();
   const [variant, setVariant] = useState<"loading" | "data" | "empty">("loading");
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [status, setStatus] = useState<string>("اختر إجابة لكل سؤال");

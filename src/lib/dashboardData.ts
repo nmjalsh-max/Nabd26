@@ -225,6 +225,9 @@ export async function getAdminDashboardSnapshot() {
       totalPointsDistributed: 1240,
       followUpCount: 5,
       trendNotes: ["مشاركة اليوم مرتفعة", "عدد نقاط التفاعل جيد"],
+      hrAbsenceRate: 4.2,
+      hrEngagement: 68,
+      hrRiskAbsent: 3,
     };
   }
 
@@ -250,13 +253,38 @@ export async function getAdminDashboardSnapshot() {
   const { data: alertsData } = await client.from("critical_alerts").select("id").eq("is_resolved", false);
   const followUpCount = alertsData?.length ?? 0;
 
+  // HR correlation data (absence/leaves × wellbeing)
+  let hrAbsenceRate = 0;
+  let hrEngagement = 0;
+  let hrRiskAbsent = 0;
+
+  const { data: leavesData } = await client
+    .from("leaves")
+    .select("user_id, status")
+    .gte("created_at", new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
+
+  const absentUserIds = new Set((leavesData ?? []).filter((l) => l.status === "approved").map((l) => l.user_id));
+  hrAbsenceRate = employeeCount ? Math.round((absentUserIds.size / employeeCount) * 100) : 0;
+  hrEngagement = participationRate;
+
+  const { data: riskUsers } = await client
+    .from("critical_alerts")
+    .select("user_id")
+    .eq("is_resolved", false);
+
+  hrRiskAbsent = (riskUsers ?? []).filter((a) => absentUserIds.has(a.user_id)).length;
+
   return {
     participationRate,
     totalPointsDistributed,
     followUpCount,
+    hrAbsenceRate,
+    hrEngagement,
+    hrRiskAbsent,
     trendNotes: [
       `مشاركة اليوم: ${participationRate}%`,
       `إجمالي النقاط الموزعة: ${totalPointsDistributed}`,
+      `غياب الشهر: ${hrAbsenceRate}% — حالات حرجة غائبة: ${hrRiskAbsent}`,
     ],
   };
 }

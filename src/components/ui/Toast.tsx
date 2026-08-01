@@ -1,4 +1,4 @@
-import { C } from "../../theme/tokens";
+import { useTheme } from "../../theme/ThemeContext";
 
 type ToastProps = {
   open: boolean;
@@ -7,14 +7,15 @@ type ToastProps = {
   onDismiss: () => void;
 };
 
-const toneStyle = {
-  info: { bg: C.surfaceHi, border: C.borderLo, text: C.textHi },
-  success: { bg: "#10271C", border: C.green, text: C.green },
-  error: { bg: "#2A0D0D", border: C.red, text: C.red },
-} as const;
-
 export function Toast({ open, message, tone = "info", onDismiss }: ToastProps) {
+  const { theme: C } = useTheme();
   if (!open) return null;
+
+  const toneStyle = {
+    info: { bg: C.surfaceHi, border: C.borderLo, text: C.textHi },
+    success: { bg: C.surfaceHi, border: C.green, text: C.green },
+    error: { bg: C.surfaceHi, border: C.red, text: C.red },
+  } as const;
 
   const s = toneStyle[tone];
 

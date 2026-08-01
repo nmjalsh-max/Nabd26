@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { C } from "../theme/tokens";
+import { useTheme } from "../theme/ThemeContext";
+import { FONT } from "../theme/tokens";
 
 // عنوان الصفحة الموحّد لكل صفحات الأدمن — عنوان + وصف + عناصر يمين اختيارية
 export function PageHeader({
@@ -11,6 +12,7 @@ export function PageHeader({
   description?: string;
   actions?: ReactNode;
 }) {
+  const { theme: C } = useTheme();
   return (
     <div
       style={{
@@ -23,11 +25,11 @@ export function PageHeader({
       }}
     >
       <div>
-        <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 700, fontSize: 24, color: C.textHi }}>
+        <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 700, fontSize: FONT.xxl, color: C.textHi }}>
           {title}
         </div>
         {description && (
-          <div style={{ color: C.textLo, fontSize: 13, marginTop: 6, lineHeight: 1.6 }}>{description}</div>
+          <div style={{ color: C.textLo, fontSize: FONT.sm, marginTop: 6, lineHeight: 1.6 }}>{description}</div>
         )}
       </div>
       {actions && <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>{actions}</div>}
@@ -45,6 +47,7 @@ export function SectionCard({
   description?: string;
   children: ReactNode;
 }) {
+  const { theme: C } = useTheme();
   return (
     <div
       style={{
@@ -55,12 +58,12 @@ export function SectionCard({
       }}
     >
       {title && (
-        <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 700, color: C.textHi, fontSize: 15 }}>
+        <div style={{ fontFamily: "'Sora',sans-serif", fontWeight: 700, color: C.textHi, fontSize: FONT.lg }}>
           {title}
         </div>
       )}
       {description && (
-        <div style={{ color: C.textLo, fontSize: 12, marginTop: 6, lineHeight: 1.7 }}>{description}</div>
+        <div style={{ color: C.textLo, fontSize: FONT.sm, marginTop: 6, lineHeight: 1.7 }}>{description}</div>
       )}
       <div style={{ marginTop: title || description ? 14 : 0 }}>{children}</div>
     </div>
@@ -77,6 +80,7 @@ export function StatCard({
   value: ReactNode;
   accent?: string;
 }) {
+  const { theme: C } = useTheme();
   return (
     <div
       style={{
@@ -101,7 +105,7 @@ export function StatCard({
           }}
         />
       )}
-      <div style={{ color: C.textLo, fontSize: 12, position: "relative" }}>{label}</div>
+      <div style={{ color: C.textLo, fontSize: FONT.xs, position: "relative" }}>{label}</div>
       <div
         style={{
           fontFamily: "'JetBrains Mono',monospace",
@@ -120,6 +124,7 @@ export function StatCard({
 
 // شارة حالة صغيرة (stable / watch / at-risk وما شابه)
 export function StatusPill({ tone, children }: { tone: "green" | "amber" | "red" | "lavender" | "gray"; children: ReactNode }) {
+  const { theme: C } = useTheme();
   const map: Record<string, string> = {
     green: C.green,
     amber: C.amber,
@@ -135,7 +140,7 @@ export function StatusPill({ tone, children }: { tone: "green" | "amber" | "red"
         background: `${color}1f`,
         color,
         fontWeight: 700,
-        fontSize: 12,
+        fontSize: FONT.sm,
         padding: "6px 12px",
         borderRadius: 999,
         display: "inline-flex",
@@ -159,6 +164,7 @@ export function GhostButton({
   children: ReactNode;
   type?: "button" | "submit";
 }) {
+  const { theme: C } = useTheme();
   return (
     <button
       type={type}
@@ -170,7 +176,7 @@ export function GhostButton({
         padding: "9px 16px",
         color: active ? C.lavSoft : C.textLo,
         fontWeight: 700,
-        fontSize: 12,
+        fontSize: FONT.sm,
         cursor: "pointer",
         transition: "border-color .15s, color .15s, background .15s",
       }}
@@ -192,6 +198,7 @@ export function GradientButton({
   type?: "button" | "submit";
   disabled?: boolean;
 }) {
+  const { theme: C } = useTheme();
   return (
     <button
       type={type}
@@ -204,7 +211,7 @@ export function GradientButton({
         padding: "10px 18px",
         color: C.bg,
         fontWeight: 700,
-        fontSize: 12,
+        fontSize: FONT.sm,
         cursor: disabled ? "not-allowed" : "pointer",
         opacity: disabled ? 0.65 : 1,
       }}
@@ -216,6 +223,7 @@ export function GradientButton({
 
 // حاوية الصفحة الموحّدة (خلفية + عرض أقصى + حشو)
 export function PageShell({ children }: { children: ReactNode }) {
+  const { theme: C } = useTheme();
   return (
     <div style={{ minHeight: "100vh", background: C.bg, color: C.textHi, padding: "24px 20px" }}>
       <div style={{ maxWidth: 1080, margin: "0 auto", display: "flex", flexDirection: "column", gap: 16 }}>
@@ -224,3 +232,4 @@ export function PageShell({ children }: { children: ReactNode }) {
     </div>
   );
 }
+

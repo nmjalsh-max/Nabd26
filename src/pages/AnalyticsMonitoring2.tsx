@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { C } from "../theme/tokens";
+import { useTheme } from "../theme/ThemeContext";
 import { reportsMock } from "../mock-data/reports";
 import { DataState } from "../components/DataState";
 import { PageHeader, PageShell, SectionCard, StatCard, StatusPill } from "../components/AdminUI";
 
 export default function AnalyticsMonitoring2() {
+  const { theme: C } = useTheme();
   const [variant, setVariant] = useState<"loading" | "data" | "empty">("loading");
 
   useEffect(() => {

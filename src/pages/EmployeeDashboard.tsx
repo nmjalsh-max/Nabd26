@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { C, STATUS_STYLE } from "../theme/tokens";
+import { STATUS_STYLE, STATUS_STYLE_LIGHT } from "../theme/tokens";
+import { useTheme } from "../theme/ThemeContext";
 import { DataState } from "../components/DataState";
 import { getSupabaseClient } from "../lib/supabaseClient";
 import { getEmployeeDashboardSnapshot } from "../lib/dashboardData";
 
 export default function EmployeeDashboard() {
   const navigate = useNavigate();
+  const { theme: C, mode } = useTheme();
   const [sectionState, setSectionState] = useState<"loading" | "empty" | "data">("loading");
   const [snapshot, setSnapshot] = useState<Awaited<ReturnType<typeof getEmployeeDashboardSnapshot>> | null>(null);
 
@@ -32,7 +34,8 @@ export default function EmployeeDashboard() {
     return () => window.clearTimeout(id);
   }, []);
 
-  const status = snapshot?.completion ? STATUS_STYLE.healthy : STATUS_STYLE.watch;
+  const statusMap = mode === "light" ? STATUS_STYLE_LIGHT : STATUS_STYLE;
+  const status = snapshot?.completion ? statusMap.healthy : statusMap.watch;
   const pointsPct = snapshot?.progressPct ?? 0;
 
   return (

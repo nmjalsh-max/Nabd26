@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { BarChart, Bar, CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { C } from "../theme/tokens";
+import { useTheme } from "../theme/ThemeContext";
 import { DataState } from "../components/DataState";
 import { getAnalyticsSnapshot, type AnalyticsSnapshot } from "../lib/dashboardData";
 import { PageHeader, PageShell, SectionCard, StatusPill } from "../components/AdminUI";
-
-const PIE_COLORS = [C.lavender, C.pink, C.cyan, C.green];
 
 function statusTone(status: string): "green" | "amber" | "red" {
   if (status === "stable") return "green";
@@ -14,6 +12,8 @@ function statusTone(status: string): "green" | "amber" | "red" {
 }
 
 export default function AnalyticsMonitoring() {
+  const { theme: C } = useTheme();
+  const PIE_COLORS = [C.lavender, C.pink, C.cyan, C.green];
   const [variant, setVariant] = useState<"loading" | "data" | "empty">("loading");
   const [snapshot, setSnapshot] = useState<AnalyticsSnapshot | null>(null);
 

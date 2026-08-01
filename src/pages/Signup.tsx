@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { C } from "../theme/tokens";
+import { useTheme } from "../theme/ThemeContext";
 import { useLang } from "../i18n/LangContext";
 import { getSupabaseClient } from "../lib/supabaseClient";
 
 // شعار القلب النابض — نفس الشعار المستخدم في Landing وLogin وAppShell
 function HeartLogo({ size = 22 }: { size?: number }) {
+  const { theme: C } = useTheme();
   return (
     <svg width={size} height={size} viewBox="0 0 34 34">
       <path
@@ -25,6 +26,7 @@ function HeartLogo({ size = 22 }: { size?: number }) {
 }
 
 export default function Signup() {
+  const { theme: C } = useTheme();
   const navigate = useNavigate();
   const { lang } = useLang();
 

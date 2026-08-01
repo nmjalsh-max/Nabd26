@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { C } from "../theme/tokens";
+import { useTheme } from "../theme/ThemeContext";
 import { DataState } from "../components/DataState";
 import { getSupabaseClient } from "../lib/supabaseClient";
 import { getPointsRewardsSnapshot } from "../lib/dashboardData";
 
 export default function PointsRewards() {
+  const { theme: C } = useTheme();
   const [variant, setVariant] = useState<"loading" | "data" | "empty">("loading");
   const [snapshot, setSnapshot] = useState<Awaited<ReturnType<typeof getPointsRewardsSnapshot>> | null>(null);
 

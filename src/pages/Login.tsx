@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { C } from "../theme/tokens";
+import { useTheme } from "../theme/ThemeContext";
 import { getSupabaseClient } from "../lib/supabaseClient";
 
 type Role = "employee" | "admin";
@@ -14,6 +14,7 @@ const DEMO_ACCOUNTS: Record<string, { password: string; role: Role }> = {
 };
 
 function HeartLogo({ size = 22 }: { size?: number }) {
+  const { theme: C } = useTheme();
   return (
     <svg width={size} height={size} viewBox="0 0 34 34">
       <path
@@ -33,6 +34,7 @@ function HeartLogo({ size = 22 }: { size?: number }) {
 }
 
 export default function Login() {
+  const { theme: C } = useTheme();
   const [role, setRole] = useState<Role>("employee");
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");

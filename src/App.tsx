@@ -17,6 +17,9 @@ import AnalyticsMonitoring2 from "./pages/AnalyticsMonitoring2";
 import NotificationSystem from "./pages/NotificationSystem";
 import Signup from "./pages/Signup";
 import Landing from "./pages/Landing";
+import HRDashboard from "./pages/HRDashboard";
+import Employees from "./pages/Employees";
+import Leaves from "./pages/Leaves";
 import { AppShell } from "./components/AppShell";
 
 export default function App() {
@@ -141,6 +144,36 @@ export default function App() {
             }
           />
 
+<Route
+            path="/hr"
+            element={
+              <ProtectedRoute allowedRole="admin">
+                <AppShell role="admin">
+                  <HRDashboard />
+                </AppShell>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/employees"
+            element={
+              <ProtectedRoute allowedRole="admin">
+                <AppShell role="admin">
+                  <Employees />
+                </AppShell>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/leaves"
+            element={
+              <ProtectedRoute allowedRole={["employee", "admin"]}>
+                <AppShell>
+                  <Leaves />
+                </AppShell>
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

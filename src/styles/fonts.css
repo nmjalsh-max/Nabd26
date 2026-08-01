@@ -1,4 +1,17 @@
-/* Arabic-friendly fonts (UI-only). */
+/* ============================================================
+   Nabd Space — Fonts
+   هدف التحسين: خطوط عربية واضحة + أرقام أحادية العرض
+   ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&family=Sora:wght@400;700;900&display=swap');
+/* طبقة الويب للخط العربي (Cairo/Tajawal) + خط الأرقام (JetBrains Mono) + Sora للعناوين اللاتينية */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@400;600;700;800&display=swap');
+
+/* --- الخطوط داخل التطبيق --- */
+:root {
+  --font-ui: 'Tajawal', 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+  --font-ar-primary: 'Tajawal', 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+  --font-ar-heading: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, Arial, sans-serif;
+  --font-latin-heading: 'Sora', 'Segoe UI', Tahoma, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
 

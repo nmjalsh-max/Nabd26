@@ -1,13 +1,17 @@
 import { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { C } from "../theme/tokens";
+import { useTheme } from "../theme/ThemeContext";
 import { AuthContext } from "../auth/BootContext";
 import { getSupabaseClient } from "../lib/supabaseClient";
 import LangToggle from "./LangToggle";
+import ThemeToggle from "./ThemeToggle";
 import { useLang } from "../i18n/LangContext";
 
 const ADMIN_NAV_EN = [
   { to: "/admin", label: "Dashboard" },
+  { to: "/hr", label: "HR" },
+  { to: "/employees", label: "Employees" },
+  { to: "/leaves", label: "Leaves" },
   { to: "/upload", label: "Upload" },
   { to: "/reports", label: "Reports" },
   { to: "/sessions", label: "Sessions" },
@@ -18,6 +22,9 @@ const ADMIN_NAV_EN = [
 
 const ADMIN_NAV_AR = [
   { to: "/admin", label: "لوحة الأدمن" },
+  { to: "/hr", label: "الموارد البشرية" },
+  { to: "/employees", label: "الموظفون" },
+  { to: "/leaves", label: "الإجازات" },
   { to: "/upload", label: "رفع الملفات" },
   { to: "/reports", label: "التقارير" },
   { to: "/sessions", label: "الجلسات" },
@@ -31,6 +38,7 @@ const EMPLOYEE_NAV_EN = [
   { to: "/mood", label: "Daily Mood" },
   { to: "/points", label: "Points" },
   { to: "/sessions", label: "Sessions" },
+  { to: "/leaves", label: "My Leaves" },
   { to: "/notifications", label: "Notifications" },
 ];
 
@@ -39,6 +47,7 @@ const EMPLOYEE_NAV_AR = [
   { to: "/mood", label: "المقياس اليومي" },
   { to: "/points", label: "النقاط" },
   { to: "/sessions", label: "الجلسات" },
+  { to: "/leaves", label: "إجازاتي" },
   { to: "/notifications", label: "الإشعارات" },
 ];
 
@@ -47,6 +56,7 @@ export function AppShell({ children, role }: { children: React.ReactNode; role?:
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
   const { userId } = authContext;
+  const { theme: C } = useTheme();
   const resolvedRole = role ?? authContext.role ?? "employee";
 
   const navItems = resolvedRole === "admin"
@@ -70,7 +80,7 @@ export function AppShell({ children, role }: { children: React.ReactNode; role?:
           top: 0,
           zIndex: 20,
           borderBottom: `1px solid ${C.border}`,
-          background: `${C.bg}EF`,
+          background: C.bg + "EF",
           backdropFilter: "blur(12px)",
         }}
       >
@@ -94,6 +104,7 @@ export function AppShell({ children, role }: { children: React.ReactNode; role?:
             </div>
 
             <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+              <ThemeToggle />
               <LangToggle />
               <button
                 type="button"
@@ -145,3 +156,4 @@ export function AppShell({ children, role }: { children: React.ReactNode; role?:
     </div>
   );
 }
+

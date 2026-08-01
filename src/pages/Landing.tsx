@@ -1,27 +1,7 @@
 import { Link } from "react-router-dom";
-import { C } from "../theme/tokens";
 import LangToggle from "../components/LangToggle";
 import { useLang } from "../i18n/LangContext";
-
-// Heart logo — same as used in AppShell and HeartLoader
-function HeartLogo({ size = 26 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 34 34">
-      <path
-        d="M17 25 C8 19 6 13 10 10 C13 8 16 10 17 13 C18 10 21 8 24 10 C28 13 26 19 17 25 Z"
-        fill={C.pink}
-      />
-      <path
-        d="M6 17 H12 L14 12 L18 22 L20 17 H28"
-        fill="none"
-        stroke={C.bg}
-        strokeWidth={1.3}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
+import { useTheme } from "../theme/ThemeContext";
 
 const featuresEn = [
   { icon: "❤️", title: "Daily pulse", desc: "A simple daily check-in to measure your mood and well-being." },
@@ -35,8 +15,29 @@ const featuresAr = [
   { icon: "⭐", title: "مكافآت وتحفيز", desc: "نقاط ومكافآت تحفّزك على المشاركة" },
 ];
 
+// Heart logo — same as used in AppShell and HeartLoader
+function HeartLogo({ size = 26, color, stroke }: { size?: number; color?: string; stroke?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 34 34">
+      <path
+        d="M17 25 C8 19 6 13 10 10 C13 8 16 10 17 13 C18 10 21 8 24 10 C28 13 26 19 17 25 Z"
+        fill={color}
+      />
+      <path
+        d="M6 17 H12 L14 12 L18 22 L20 17 H28"
+        fill="none"
+        stroke={stroke}
+        strokeWidth={1.3}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export default function Landing() {
   const { lang } = useLang();
+  const { theme: C } = useTheme();
   const isEn = lang === "en";
   const features = isEn ? featuresEn : featuresAr;
 
@@ -48,7 +49,7 @@ export default function Landing() {
         className="flex items-center justify-between px-6 py-4"
       >
         <div className="flex items-center gap-2">
-          <HeartLogo />
+          <HeartLogo color={C.pink} stroke={C.bg} />
           <span style={{ fontFamily: "'Sora', sans-serif", color: C.lavSoft }} className="font-bold text-base">
             Nabd Space
           </span>
@@ -67,7 +68,7 @@ export default function Landing() {
           className="absolute top-4 left-1/2 -translate-x-1/2 -z-0"
         />
         <div className="flex justify-center mb-5">
-          <HeartLogo size={64} />
+          <HeartLogo size={64} color={C.pink} stroke={C.bg} />
         </div>
         <h1
           style={{ fontFamily: "'Sora', sans-serif", color: C.lavSoft }}
@@ -155,3 +156,4 @@ export default function Landing() {
     </div>
   );
 }
+

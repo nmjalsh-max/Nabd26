@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { C } from "../theme/tokens";
+import { useTheme } from "../theme/ThemeContext";
 import { DataState } from "../components/DataState";
 import { AuthContext } from "../auth/BootContext";
 import { getSupabaseClient } from "../lib/supabaseClient";
@@ -14,6 +14,7 @@ const EMPTY_FORM = {
 };
 
 export default function SessionsCalendar() {
+  const { theme: C } = useTheme();
   const { role, userId } = useContext(AuthContext);
   const [variant, setVariant] = useState<"loading" | "data" | "empty">("loading");
   const [items, setItems] = useState<SessionCalendarEntry[]>([]);

@@ -5,6 +5,7 @@ import "./index.css";
 import "./styles/fonts.css";
 
 import { LangProvider } from "./i18n/LangContext";
+import { ThemeProvider } from "./theme/ThemeContext";
 
 const rootEl = document.getElementById("root")!;
 
@@ -16,11 +17,11 @@ if (typeof document !== "undefined") {
 
 ReactDOM.createRoot(rootEl).render(
   <React.StrictMode>
-    <LangProvider initialLang="en">
-      <App />
-    </LangProvider>
+    <ThemeProvider>
+      <LangProvider initialLang="en">
+        <App />
+      </LangProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
-
-
 

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { C } from "../theme/tokens";
+import { useTheme } from "../theme/ThemeContext";
 import { DataState } from "../components/DataState";
 import { AuthContext } from "../auth/BootContext";
 import { getSupabaseClient } from "../lib/supabaseClient";
@@ -7,6 +7,7 @@ import { getNotificationSnapshot, type NotificationFeedItem } from "../lib/dashb
 import { PageHeader, PageShell, SectionCard, StatCard, GhostButton } from "../components/AdminUI";
 
 export default function NotificationSystem() {
+  const { theme: C } = useTheme();
   const { userId } = useContext(AuthContext);
   const [variant, setVariant] = useState<"loading" | "data" | "empty">("loading");
   const [items, setItems] = useState<NotificationFeedItem[]>([]);

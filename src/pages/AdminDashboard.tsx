@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { C } from "../theme/tokens";
+import { useTheme } from "../theme/ThemeContext";
 import { DataState } from "../components/DataState";
 import { getSupabaseClient } from "../lib/supabaseClient";
 import { getAdminDashboardSnapshot } from "../lib/dashboardData";
@@ -8,6 +8,7 @@ import { PageHeader, PageShell, SectionCard, StatCard, GhostButton } from "../co
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
+  const { theme: C } = useTheme();
   const [sectionState, setSectionState] = useState<"loading" | "empty" | "data">("loading");
   const [snapshot, setSnapshot] = useState<Awaited<ReturnType<typeof getAdminDashboardSnapshot>> | null>(null);
 
@@ -58,6 +59,21 @@ export default function AdminDashboard() {
             description="Unresolved cases in critical_alerts with gentle labeling instead of alarming text"
           >
             <StatCard label="Current cases" value={snapshot?.followUpCount ?? 0} accent={C.amber} />
+          </SectionCard>
+
+          <SectionCard
+            title="Wellbeing × Absence correlation"
+            description="ربط الرفاهية النفسية بالحضور — الموظفون ذوو المعنويات المنخفضة قد يكونون أكثر غيابًا"
+          >
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0,1fr))", gap: 12 }}>
+              <StatCard label="Employee absence rate (30d)" value={`${snapshot?.hrAbsenceRate ?? 0}%`} accent={C.cyan} />
+              <StatCard label="Wellbeing engagement" value={`${snapshot?.hrEngagement ?? 0}%`} accent={C.lavender} />
+              <StatCard label="High-risk + absent" value={snapshot?.hrRiskAbsent ?? 0} accent={C.red} />
+            </div>
+            <div style={{ marginTop: 12, color: C.textLo, fontSize: 13, lineHeight: 1.7 }}>
+              يدمج هذا القسم بيانات الموارد البشرية (الغياب/الإجازات) مع مؤشرات الرفاهية (المزاج اليومي)
+              لتقديم رؤية موحّدة للإدارة.
+            </div>
           </SectionCard>
 
           <SectionCard title="Trend notes">

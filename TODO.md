@@ -1,57 +1,64 @@
 # TODO — Tasks Roadmap
 
-- [x] TASK 1: Routing + هيكلة مجلدات + مكونات مشتركة
-  - [x] تحديث `src/App.tsx` بحيث `/` يعرض Landing احترافيًا، و`*` يوجّه إلى `/`
-  - [x] بناء Navigation موحد داخل `AppShell` حسب الدور (admin/employee)
-  - [x] بناء Guards حقيقية حسب الدور (بعد ربط Auth بـ Supabase)
-  - [x] إزالة الاعتماد على مسارات "يتيمة" بلا وصول داخلي
+## ✅ Completed
 
-- [x] TASK 2: Supabase Schema + RLS
-  - [x] إنشاء migration: `supabase/migrations/001_init_hr_schema.sql`
-  - [x] تفعيل RLS + Policies تمنع الموظف من رؤية بيانات غيره
+### System Foundation
+- [x] Routing + هيكلة مجلدات + مكونات مشتركة
+- [x] Supabase Schema + RLS
+- [x] Auth حقيقية (Supabase + Mock)
+- [x] رفع ملفات الموظفين (Upload)
+- [x] Daily Mood Survey
+- [x] Employee Dashboard real data
+- [x] Admin Dashboard real data
+- [x] Points & Rewards
+- [x] Business flow completion (جلسات, تقارير, تحليلات, تنبيهات, إشعارات)
 
-- [x] TASK 3: Auth حقيقية
-  - [x] إنشاء `src/lib/supabaseClient.ts`
-  - [x] استبدال `BootContext.tsx` ليقرأ session من Supabase
-  - [x] تحديث `Login.tsx` باستخدام `signInWithPassword`
-  - [x] إضافة "نسيت كلمة المرور" عبر `resetPasswordForEmail`
-  - [x] توجيه تلقائي بعد الدخول حسب role
-  - [x] حماية المسارات (موظف/أدمن)
+### Theme System (Dark/Light Mode)
+- [x] Design tokens: `src/theme/tokens.ts` — darkC + lightC palettes
+- [x] Theme context: `src/theme/ThemeContext.tsx` — `ThemeProvider` + `useTheme` hook
+- [x] Theme toggle: `src/components/ThemeToggle.tsx`
+- [x] CSS variables: `src/index.css` — `:root` + `[data-theme='light']` with all nabd-* vars
+- [x] Tailwind config: colors use CSS vars, fonts include Tajawal/Cairo
+- [x] Fonts: `src/styles/fonts.css` — Tajawal (Arabic primary), Cairo (headings), Sora (Latin), JetBrains Mono (mono)
+- [x] `src/main.tsx` — wrapped with `<ThemeProvider>`
 
-- [x] TASK 4: رفع ملفات الموظفين
-  - [x] تعديل `UploadFiles.tsx` ليرفع CSV/Excel إلى Supabase Storage
-  - [x] parsing حقيقي + Preview + Validation
-  - [x] upsert فعلي في `users` + إدخال سجل في `employee_uploads`
+### Pages Updated with useTheme()
+- [x] `src/components/AppShell.tsx` — `useTheme()` + HR/Employees/Leaves nav links
+- [x] `src/components/AdminUI.tsx` — `useTheme()` for all components
+- [x] `src/pages/EmployeeDashboard.tsx` — `useTheme()`
+- [x] `src/pages/MoodQuestions.tsx` — `useTheme()`
+- [x] `src/pages/PointsRewards.tsx` — `useTheme()`
+- [x] `src/pages/SessionsCalendar.tsx` — `useTheme()`
+- [x] `src/pages/NotificationSystem.tsx` — `useTheme()`
+- [x] `src/pages/AdminDashboard.tsx` — `useTheme()`
+- [x] `src/pages/AnalyticsMonitoring.tsx` — `useTheme()`
+- [x] `src/pages/AnalyticsMonitoring2.tsx` — `useTheme()`
+- [x] `src/pages/Reports.tsx` — `useTheme()`
+- [x] `src/pages/HRDashboard.tsx` — `useTheme()`
+- [x] `src/pages/Employees.tsx` — `useTheme()` (new HR page)
+- [x] `src/pages/Leaves.tsx` — `useTheme()` (new HR page)
+- [x] `src/pages/Landing.tsx` — `useTheme()`
+- [x] `src/pages/Login.tsx` — `useTheme()`
+- [x] `src/pages/Signup.tsx` — `useTheme()`
 
-- [x] TASK 5: Daily Mood Survey
-  - [x] شاشة 5 أسئلة مع حفظ يومي فعلي
-  - [x] منع التكرار في نفس اليوم عبر `pulse_responses`
-  - [x] إضافة نقاط في `points_ledger`
-  - [x] شاشة شكر/تأكيد بعد الإرسال
+### HR Module (ربط التقنية بالموارد البشرية)
+- [x] Mock data: `src/mock-data/hr.ts` — employeesHR, leaveRequests, wellbeingAbsenceInsights
+- [x] Business logic: `src/lib/dashboardData.ts` — HR correlations in `getAdminDashboardSnapshot`
+- [x] HR Dashboard: `src/pages/HRDashboard.tsx` — لوحة الموارد البشرية
+- [x] Employees directory: `src/pages/Employees.tsx` — دليل الموظفين مع البحث
+- [x] Leaves management: `src/pages/Leaves.tsx` — إدارة الإجازات
+- [x] Routes: `src/App.tsx` — `/hr`, `/employees`, `/leaves` paths added
 
-- [x] TASK 6: Employee Dashboard real data
-  - [x] قراءة نقاط وقيمة تقدم اليوم من `points_ledger`
-  - [x] قراءة جلسات قادمة من `yoga_sessions`/`session_attendance`
-  - [x] قراءة إشعارات من `notifications`
+### Typography & Font Clarity
+- [x] Fonts CSS: Tajawal (primary Arabic), Cairo (headings), Sora (Latin headings), JetBrains Mono (mono)
+- [x] Tailwind: `fontFamily` includes `tajawal`, `cairo`, `sora`, `mono`
+- [x] `index.css`: `html { font-size: 16px }`, `body { font-family: var(--font-ui); font-size: 15px }`
+- [x] Better readability: `-webkit-font-smoothing: antialiased`, optimized line-height
 
-- [x] TASK 7: Admin Dashboard real data
-  - [x] حساب نسبة المشاركة اليومية من `pulse_responses`
-  - [x] جمع النقاط الموزعة من `points_ledger`
-  - [x] عدد حالات المتابعة من `critical_alerts`
+### Build
+- [x] `tsconfig.node.json` — fixed `composite: true` for project references
 
-- [x] TASK 8: Points & Rewards
-  - [x] حساب الرصيد الحقيقي من `points_ledger`
-  - [x] إنشاء `user_rewards` عند الوصول للعُتبات
-  - [x] إرسال إشعار مكافأة في `notifications`
-
-- [x] TASK 9–13: Business flow completion
-  - [x] جلسات يوغا واحتياطي booking/attendance
-  - [x] تقارير + CSV/PDF export
-  - [x] تحليل ورصد + تصنيف تلقائي
-  - [x] تنبيهات علاجية/متابعة
-  - [x] إشعارات Realtime + fallback
-
-- [x] Testing
-  - [x] `npm run lint` + `npm run build`
-  - [x] اختبار: login/logout/role gates/upload/dashboard data flow (مع fallback Mock عند غياب Supabase)
-
+## 🔄 In Progress / Next
+- [x] Run `npm run build` — passed (Vite 5.4.21, removed `--configLoader` option)
+- [x] Final testing of all routes
+- [ ] Deploy to Railway (if needed)
