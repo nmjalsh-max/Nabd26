@@ -2,12 +2,18 @@ import { useEffect, useState } from "react";
 import { useTheme } from "../theme/ThemeContext";
 import { DataState } from "../components/DataState";
 import { getSupabaseClient } from "../lib/supabaseClient";
-import { getPointsRewardsSnapshot } from "../lib/dashboardData";
+import { getPointsRewardsSnapshot, hasRecovered } from "../lib/dashboardData";
+import { employeesHR } from "../mock-data/hr";
+import { ikigaiPrompts } from "../mock-data/ikigai";
+import { useLang } from "../i18n/LangContext";
 
 export default function PointsRewards() {
   const { theme: C } = useTheme();
+  const { lang } = useLang();
+  const isEn = lang === "en";
   const [variant, setVariant] = useState<"loading" | "data" | "empty">("loading");
   const [snapshot, setSnapshot] = useState<Awaited<ReturnType<typeof getPointsRewardsSnapshot>> | null>(null);
+  const [recovered] = useState<boolean>(() => hasRecovered(employeesHR[0]));
 
   useEffect(() => {
     const id = window.setTimeout(() => setVariant("data"), 650);
@@ -104,6 +110,28 @@ export default function PointsRewards() {
                 <div style={{ fontWeight: 900, color: C.textHi, fontSize: 14 }}>Badges</div>
                 <div style={{ color: C.textLo, fontSize: 12, marginTop: 6 }}>مكافآت عند الوصول لعتبات</div>
 
+                {recovered && (
+                  <div
+                    style={{
+                      marginTop: 12,
+                      border: `1px solid ${C.lavender}55`,
+                      borderRadius: 16,
+                      padding: 14,
+                      background: `linear-gradient(120deg, ${C.lavender}1f, ${C.pink}18)`,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: 12,
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontWeight: 900, color: C.textHi, fontSize: 13 }}>وسام التعافي 🌱</div>
+                      <div style={{ color: C.textMid, fontSize: 12, marginTop: 4 }}>رحلة تعافٍ من ضغط مستمر نحو الاستقرار — نعتزّ بك</div>
+                    </div>
+                    <div style={{ fontSize: 22 }}>🏅</div>
+                  </div>
+                )}
+
                 <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr", gap: 10 }}>
                   {(snapshot?.rewards ?? []).map((b) => (
                     <div key={b.id} style={{ background: C.surfaceHi, border: `1px solid ${C.borderLo}`, borderRadius: 16, padding: 12, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
@@ -122,6 +150,46 @@ export default function PointsRewards() {
                       />
                     </div>
                   ))}
+                </div>
+              </div>
+
+              {/* Ikigai — purpose reflection (feature 6) */}
+              <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, padding: 16 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+                  <div>
+                    <div style={{ fontWeight: 900, color: C.textHi, fontSize: 14 }}>🌸 إيكيغاي — بطاقة الهدف</div>
+                    <div style={{ color: C.textLo, fontSize: 12, marginTop: 4, lineHeight: 1.6 }}>
+                      {isEn
+                        ? "Ikigai (生き甲斐) is your reason for being. Four gentle questions to reconnect with purpose."
+                        : "إيكيغاي (生き甲斐) هو سبب وجودك. أربعة أسئلة لطيفة لإعادة الاتصال بالهدف."}
+                    </div>
+                  </div>
+                  <div style={{ width: 180, borderRadius: 14, border: `1px solid ${C.borderLo}`, background: C.surfaceHi, padding: 10, textAlign: "center" }}>
+                    <div style={{ color: C.textLo, fontSize: 11, fontWeight: 800 }}>{isEn ? "Reflection" : "تأمّل"}</div>
+                    <div style={{ fontFamily: "var(--font-mono)", fontWeight: 900, fontSize: 18, color: C.lavSoft, marginTop: 2 }}>🌸</div>
+                  </div>
+                </div>
+
+                <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "repeat(2, minmax(0,1fr))", gap: 10 }}>
+                  {ikigaiPrompts.map((prompt) => (
+                    <div key={prompt.id} style={{ border: `1px solid ${C.borderLo}`, borderRadius: 14, padding: 12, background: C.surfaceHi }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ fontSize: 18, lineHeight: 1 }}>{prompt.emoji}</span>
+                        <span style={{ color: C.lavSoft, fontWeight: 800, fontSize: 13 }}>
+                          {isEn ? prompt.circleEn : prompt.circleAr}
+                        </span>
+                      </div>
+                      <div style={{ color: C.textMid, fontSize: 12, marginTop: 8, lineHeight: 1.7 }}>
+                        {isEn ? prompt.questionEn : prompt.questionAr}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ marginTop: 12, color: C.textLo, fontSize: 12, lineHeight: 1.7, textAlign: "center" }}>
+                  {isEn
+                    ? "The goal is not to fully answer today — just to open a small space to think."
+                    : "الهدف ليس الإجابة الكاملة اليوم، بل فتح مساحة صغيرة للتفكير."}
                 </div>
               </div>
             </div>

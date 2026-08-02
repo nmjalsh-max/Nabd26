@@ -1,4 +1,5 @@
 export const sessionsMock = {
+  radioTaiso: true,
   nextSessions: [
     { id: "s1", title: "جلسة يوغا صباحية", time: "Sun · 7:30 AM", mode: "In-person", coach: "مدرب خالد", duration: "45 دقيقة" },
     { id: "s2", title: "ورشة إدارة التوتر", time: "Tue · 1:00 PM", mode: "Virtual", coach: "مدربة نور", duration: "60 دقيقة" },

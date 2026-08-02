@@ -5,12 +5,16 @@ import { useTheme } from "../theme/ThemeContext";
 import { DataState } from "../components/DataState";
 import { getSupabaseClient } from "../lib/supabaseClient";
 import { getEmployeeDashboardSnapshot } from "../lib/dashboardData";
+import { getCurrentCampaign, isSeasonalBannerDismissed, dismissSeasonalBanner } from "../mock-data/seasonalCampaigns";
+import { useLang } from "../i18n/LangContext";
 
 export default function EmployeeDashboard() {
   const navigate = useNavigate();
   const { theme: C, mode } = useTheme();
+  const { lang } = useLang();
   const [sectionState, setSectionState] = useState<"loading" | "empty" | "data">("loading");
   const [snapshot, setSnapshot] = useState<Awaited<ReturnType<typeof getEmployeeDashboardSnapshot>> | null>(null);
+  const [showSeasonal, setShowSeasonal] = useState<boolean>(() => !isSeasonalBannerDismissed());
 
   async function handleLogout() {
     const client = getSupabaseClient();
@@ -38,9 +42,63 @@ export default function EmployeeDashboard() {
   const status = snapshot?.completion ? statusMap.healthy : statusMap.watch;
   const pointsPct = snapshot?.progressPct ?? 0;
 
+  // Seasonal campaign banner (feature 1)
+  const campaign = getCurrentCampaign();
+  const isEn = lang === "en";
+
   return (
     <div style={{ minHeight: "100vh", background: C.bg, color: C.textHi, padding: 20 }}>
       <div style={{ maxWidth: 1040, margin: "0 auto" }}>
+        {showSeasonal && (
+          <div
+            style={{
+              background: `linear-gradient(120deg, ${campaign.accent}26, ${C.pink}22, ${C.lavender}26)`,
+              border: `1px solid ${campaign.accent}55`,
+              borderRadius: 18,
+              padding: "14px 16px",
+              marginBottom: 16,
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 12,
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+              <span style={{ fontSize: 26 }}>{campaign.emoji}</span>
+              <div>
+                <div style={{ fontFamily: "var(--font-heading)", fontWeight: 900, color: C.textHi, fontSize: 14 }}>
+                  {isEn ? campaign.titleEn : campaign.titleAr}
+                </div>
+                <div style={{ color: C.textMid, fontSize: 12, marginTop: 4, lineHeight: 1.6 }}>
+                  {isEn ? campaign.messageEn : campaign.messageAr}
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              aria-label="Dismiss"
+              onClick={() => {
+                dismissSeasonalBanner();
+                setShowSeasonal(false);
+              }}
+              style={{
+                border: `1px solid ${campaign.accent}66`,
+                background: "transparent",
+                color: C.textLo,
+                borderRadius: 999,
+                width: 32,
+                height: 32,
+                cursor: "pointer",
+                fontWeight: 900,
+                fontSize: 14,
+              }}
+            >
+              ×
+            </button>
+          </div>
+        )}
+
         <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div style={{ color: C.textLo, fontSize: 12, marginTop: 6 }}>
             Real data from Supabase when configured, with Mock fallback otherwise.

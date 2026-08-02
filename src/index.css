@@ -66,12 +66,13 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   font-family: var(--font-ui);
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.65;
   background: var(--nabd-bg);
   color: var(--nabd-text-hi);
   transition: background 0.25s ease, color 0.25s ease;
@@ -81,6 +82,35 @@ body {
 /* العناوين — تتغير حسب اللغة عبر المتغير */
 h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: var(--font-heading);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* ===== Clarity helpers ===== */
+.text-sm-clarity {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.card-title {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
+/* Ensure small labels remain legible (min 11px for UI labels) */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* Numeric tabular alignment for values */
+.mono-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 * {

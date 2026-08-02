@@ -76,6 +76,22 @@ export default function AdminDashboard() {
             </div>
           </SectionCard>
 
+          <SectionCard
+            title="4-Day Work Week Pilot"
+            description="تجربة أسبوع العمل 4 أيام — مقارنة بين الأداء والرفاهية قبل وبعد التجربة"
+          >
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0,1fr))", gap: 12 }}>
+              <StatCard label="Focus (5-day)" value="68%" accent={C.textMid} />
+              <StatCard label="Focus (4-day)" value="82%" accent={C.lavender} />
+              <StatCard label="Wellbeing Δ" value="+14%" accent={C.green} />
+              <StatCard label="Absence Δ" value="-9%" accent={C.cyan} />
+            </div>
+            <div style={{ marginTop: 12, color: C.textLo, fontSize: 13, lineHeight: 1.7 }}>
+              نموذج أولي يعرض اتجاهات التجربة. عند ربط Supabase يمكن حساب الأرقام الفعلية من
+              «pulse_responses» و«session_attendance» و«leaveRequests».
+            </div>
+          </SectionCard>
+
           <SectionCard title="Trend notes">
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {(snapshot?.trendNotes ?? []).map((note, index) => (

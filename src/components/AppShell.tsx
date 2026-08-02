@@ -12,6 +12,7 @@ const ADMIN_NAV_EN = [
   { to: "/hr", label: "HR" },
   { to: "/employees", label: "Employees" },
   { to: "/leaves", label: "Leaves" },
+  { to: "/kaizen", label: "Kaizen" },
   { to: "/upload", label: "Upload" },
   { to: "/reports", label: "Reports" },
   { to: "/sessions", label: "Sessions" },
@@ -25,6 +26,7 @@ const ADMIN_NAV_AR = [
   { to: "/hr", label: "الموارد البشرية" },
   { to: "/employees", label: "الموظفون" },
   { to: "/leaves", label: "الإجازات" },
+  { to: "/kaizen", label: "الكايزن" },
   { to: "/upload", label: "رفع الملفات" },
   { to: "/reports", label: "التقارير" },
   { to: "/sessions", label: "الجلسات" },
@@ -39,6 +41,7 @@ const EMPLOYEE_NAV_EN = [
   { to: "/points", label: "Points" },
   { to: "/sessions", label: "Sessions" },
   { to: "/leaves", label: "My Leaves" },
+  { to: "/kaizen", label: "Kaizen" },
   { to: "/notifications", label: "Notifications" },
 ];
 
@@ -48,6 +51,7 @@ const EMPLOYEE_NAV_AR = [
   { to: "/points", label: "النقاط" },
   { to: "/sessions", label: "الجلسات" },
   { to: "/leaves", label: "إجازاتي" },
+  { to: "/kaizen", label: "الكايزن" },
   { to: "/notifications", label: "الإشعارات" },
 ];
 

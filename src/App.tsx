@@ -20,6 +20,7 @@ import Landing from "./pages/Landing";
 import HRDashboard from "./pages/HRDashboard";
 import Employees from "./pages/Employees";
 import Leaves from "./pages/Leaves";
+import KaizenBox from "./pages/KaizenBox";
 import { AppShell } from "./components/AppShell";
 
 export default function App() {
@@ -170,6 +171,16 @@ export default function App() {
               <ProtectedRoute allowedRole={["employee", "admin"]}>
                 <AppShell>
                   <Leaves />
+                </AppShell>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/kaizen"
+            element={
+              <ProtectedRoute allowedRole={["employee", "admin"]}>
+                <AppShell>
+                  <KaizenBox />
                 </AppShell>
               </ProtectedRoute>
             }

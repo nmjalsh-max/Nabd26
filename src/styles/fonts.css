@@ -6,20 +6,52 @@
    - JetBrains Mono للأرقام في الحالتين
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-/* الوضع العربي (افتراضي) */
+/* ============================================================
+   Arabic mode (default)
+   - IBM Plex Sans Arabic: clearer modern Arabic for body text
+   - Cairo: strong rounded headings
+   - JetBrains Mono: numbers/code in both modes
+   ============================================================ */
 :root,
 [lang='ar'] {
-  --font-ui: 'Tajawal', 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
-  --font-heading: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, Arial, sans-serif;
+  --font-ui: 'IBM Plex Sans Arabic', 'Tajawal', 'Cairo', 'Segoe UI', Tahoma, Arial, sans-serif;
+  --font-heading: 'Cairo', 'IBM Plex Sans Arabic', 'Tajawal', 'Segoe UI', Tahoma, Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 }
 
-/* الوضع الإنجليزي */
+/* ============================================================
+   English mode
+   - Inter: clean body text
+   - Sora: geometric headings
+   ============================================================ */
 [lang='en'] {
   --font-ui: 'Inter', 'Segoe UI', Tahoma, Arial, sans-serif;
-  --font-heading: 'Sora', 'Segoe UI', Tahoma, sans-serif;
+  --font-heading: 'Sora', 'Inter', 'Segoe UI', Tahoma, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+/* ============================================================
+   Clearer rendering for Arabic glyphs
+   ============================================================ */
+[lang='ar'] body,
+[lang='ar'] p,
+[lang='ar'] span,
+[lang='ar'] button,
+[lang='ar'] input,
+[lang='ar'] select,
+[lang='ar'] textarea,
+[lang='ar'] td,
+[lang='ar'] th {
+  letter-spacing: 0;
+  font-feature-settings: 'ss01' 1;
+}
+
+/* Numbers should always use the mono font where marked */
+.font-mono,
+[data-font-mono] {
+  font-family: var(--font-mono) !important;
+  font-variant-numeric: tabular-nums;
 }
 

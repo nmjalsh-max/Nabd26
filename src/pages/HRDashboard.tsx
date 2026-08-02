@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "../theme/ThemeContext";
 import { DataState } from "../components/DataState";
-import { PageHeader, PageShell, SectionCard, StatCard, StatusPill } from "../components/AdminUI";
+import { PageHeader, PageShell, SectionCard, StatCard, StatusPill, GhostButton } from "../components/AdminUI";
 import { employeesHR, wellbeingAbsenceInsights } from "../mock-data/hr";
+import { detectRecoveries } from "../lib/dashboardData";
 
 type Tone = "green" | "amber" | "red" | "lavender" | "gray";
 
@@ -12,9 +13,29 @@ function toneForStatus(status: string): Tone {
   return "red";
 }
 
+// Omoiyari nudges — managers see a gentle reminder of employees who
+// recently dropped to watch/critical and may need a caring touch.
+type Nudge = {
+  id: string;
+  employee: string;
+  reason: string;
+};
+
+const initialNudges: Nudge[] = employeesHR
+  .filter((e) => e.status === "watch" || e.status === "critical")
+  .map((e) => ({
+    id: `nudge-${e.id}`,
+    employee: e.name,
+    reason:
+      e.status === "critical"
+        ? "معنويات منخفضة لثالث يوم متتالي — يحتاج تواصل داعم"
+        : "معنويات متوسطة مع بداية ارتفاع غياب — يفضّل متابعة أسبوعية",
+  }));
+
 export default function HRDashboard() {
   const { theme: C } = useTheme();
   const [variant, setVariant] = useState<"loading" | "data" | "empty">("loading");
+  const [nudges, setNudges] = useState<Nudge[]>(initialNudges);
 
   useEffect(() => {
     const id = window.setTimeout(() => setVariant("data"), 700);
@@ -24,6 +45,9 @@ export default function HRDashboard() {
   const criticalCount = employeesHR.filter((e) => e.status === "critical").length;
   const watchCount = employeesHR.filter((e) => e.status === "watch").length;
   const avgAbsence = Math.round((employeesHR.reduce((s, e) => s + e.absenceDays, 0) / employeesHR.length) * 10) / 10;
+
+  // Kintsugi recovery medals (feature 2)
+  const recoveries = useMemo(() => detectRecoveries(employeesHR), []);
 
   return (
     <PageShell>
@@ -82,6 +106,80 @@ export default function HRDashboard() {
               </table>
             </div>
           </SectionCard>
+
+          {/* Omoiyari nudges (feature 4) — gentle reminders for managers */}
+          <SectionCard title="يحتاجون تواصل هذا الأسبوع" description="تذكير لطيف بموظفين دخلوا حالة مراقبة أو حرجة — تواصل داعم يصنع فرقًا">
+            {nudges.length === 0 ? (
+              <div style={{ color: C.green, fontSize: 13, padding: "8px 0" }}>
+                ✅ لا توجد حالات بحاجة تواصل هذا الأسبوع — أحسنت!
+              </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {nudges.map((nudge) => (
+                  <div
+                    key={nudge.id}
+                    style={{
+                      border: `0.5px solid ${C.borderLo}`,
+                      borderRadius: 14,
+                      padding: 14,
+                      background: C.surfaceHi,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: 12,
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                      <div style={{ fontWeight: 700, color: C.textHi, fontSize: 13 }}>{nudge.employee}</div>
+                      <div style={{ color: C.textMid, fontSize: 12, lineHeight: 1.6 }}>{nudge.reason}</div>
+                    </div>
+                    <GhostButton onClick={() => setNudges((prev) => prev.filter((n) => n.id !== nudge.id))}>
+                      تم التواصل ✓
+                    </GhostButton>
+                  </div>
+                ))}
+              </div>
+            )}
+          </SectionCard>
+
+          {/* Kintsugi recovery celebrations (feature 2) */}
+          {recoveries.length > 0 && (
+            <SectionCard
+              title="رحلات تعافٍ 🏆"
+              description="موظفون انتقلوا من حالة مراقبة/حرجة إلى الاستقرار — احتفاء بتحسّنهم"
+            >
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {recoveries.map((recovery) => (
+                  <div
+                    key={recovery.employee.id}
+                    style={{
+                      border: `1px solid ${C.lavender}55`,
+                      borderRadius: 16,
+                      padding: 14,
+                      background: `linear-gradient(120deg, ${C.lavender}1f, ${C.pink}18)`,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: 12,
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                      <div style={{ fontWeight: 800, color: C.textHi, fontSize: 14 }}>
+                        ⭐ {recovery.employee.name}
+                      </div>
+                      <div style={{ color: C.textMid, fontSize: 12, lineHeight: 1.6 }}>
+                        تحسّن من «{recovery.fromStatus}» إلى «stable»
+                        {recovery.recoveredAt ? ` — ${recovery.recoveredAt}` : ""}
+                      </div>
+                    </div>
+                    <StatusPill tone="lavender">أحسنت! 🎉</StatusPill>
+                  </div>
+                ))}
+              </div>
+            </SectionCard>
+          )}
 
           <SectionCard title="ربط الرفاهية بالغياب — تحليلات ذكية" description="موظفون لديهم ارتباط عالٍ بين انخفاض المعنويات وكثرة الغياب">
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>

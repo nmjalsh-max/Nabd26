@@ -9,16 +9,17 @@ import { ThemeProvider } from "./theme/ThemeContext";
 
 const rootEl = document.getElementById("root")!;
 
-// Default to English (LTR). User can switch to Arabic (RTL) via LangToggle.
+// Default to Arabic (RTL) — matches index.html and the target audience.
+// Users can switch to English (LTR) via LangToggle.
 if (typeof document !== "undefined") {
-  document.documentElement.setAttribute("dir", "ltr");
-  document.documentElement.setAttribute("lang", "en");
+  document.documentElement.setAttribute("dir", "rtl");
+  document.documentElement.setAttribute("lang", "ar");
 }
 
 ReactDOM.createRoot(rootEl).render(
   <React.StrictMode>
     <ThemeProvider>
-      <LangProvider initialLang="en">
+      <LangProvider initialLang="ar">
         <App />
       </LangProvider>
     </ThemeProvider>

@@ -1,4 +1,70 @@
 import { getSupabaseClient } from "./supabaseClient";
+import type { EmployeeHR } from "../mock-data/hr";
+
+// ============================================================
+// Kintsugi — Recovery detection (feature 2)
+// Detects employees who moved from critical/watch → stable
+// between their last two recorded statuses.
+// ============================================================
+
+export type RecoveryInfo = {
+  employee: EmployeeHR;
+  /** The previous non-stable status before recovering */
+  fromStatus: "critical" | "watch";
+  /** Date the recovery to stable happened */
+  recoveredAt?: string;
+};
+
+/**
+ * Returns employees who recovered from critical/watch → stable
+ * within the last two status entries of their statusHistory.
+ * If no history is available, a stable status with a non-empty
+ * avgMood >= 4 is treated as "recovered recently" (heuristic).
+ */
+export function detectRecoveries(employees: EmployeeHR[]): RecoveryInfo[] {
+  const results: RecoveryInfo[] = [];
+
+  for (const employee of employees) {
+    // Employee currently not stable → no recovery to celebrate.
+    if (employee.status !== "stable") continue;
+
+    const history = employee.statusHistory ?? [];
+    if (history.length >= 2) {
+      const last = history[history.length - 1];
+      const prev = history[history.length - 2];
+
+      // We need: last = stable AND prev in (critical, watch)
+      if (last.status === "stable" && (prev.status === "critical" || prev.status === "watch")) {
+        results.push({
+          employee,
+          fromStatus: prev.status,
+          recoveredAt: last.date,
+        });
+      }
+      continue;
+    }
+
+    // Heuristic fallback: no history but flowing profile strongly
+    // suggests a recovery was just completed recently.
+    if (employee.avgMood >= 4) {
+      results.push({
+        employee,
+        fromStatus: "watch",
+      });
+    }
+  }
+
+  return results;
+}
+
+// ============================================================
+// Kintsugi — Personal recovery badge for an employee
+// Returns true if this specific employee qualifies for a
+// recovery celebration badge.
+// ============================================================
+export function hasRecovered(employee: EmployeeHR): boolean {
+  return detectRecoveries([employee]).length > 0;
+}
 
 export const DAILY_MOOD_QUESTIONS = [
   {
