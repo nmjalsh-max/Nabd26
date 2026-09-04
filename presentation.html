@@ -314,6 +314,34 @@
   }
 
   .code-table-wrapper { border: 0.5px solid var(--borderLo); border-radius: 14px; overflow: hidden; }
+  .screenshot-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .screenshot-tile {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 8px;
+  }
+  .screenshot-tile img {
+    display: block;
+    width: 100%;
+    height: 118px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 9px;
+    border: 0.5px solid var(--borderLo);
+  }
+  .screenshot-tile span {
+    display: block;
+    color: var(--textMid);
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 7px;
+    text-align: center;
+  }
 
   /* SVG Icons */
   .svg-icon {
@@ -804,9 +832,38 @@
     </div>
   </div>
 
-  <!-- SLIDE 11: HOW TO RUN -->
+  <!-- SLIDE 11: UPDATED SCREENSHOTS -->
   <div class="slide">
-    <span class="section-tag">10</span>
+    <span class="section-tag">11</span>
+    <div class="slide-title">Updated Screenshots</div>
+    <div class="slide-subtitle">Captured from the current application build at 1440x900</div>
+    <div class="slide-content">
+      <div class="screenshot-gallery">
+        <div class="screenshot-tile"><img src="screenshots/01-landing.png" alt="Landing page screenshot"><span>Landing</span></div>
+        <div class="screenshot-tile"><img src="screenshots/02-login.png" alt="Login screenshot"><span>Login</span></div>
+        <div class="screenshot-tile"><img src="screenshots/03-employee-dashboard.png" alt="Employee dashboard screenshot"><span>Employee Dashboard</span></div>
+        <div class="screenshot-tile"><img src="screenshots/04-mood-questions.png" alt="Mood questions screenshot"><span>Mood Questions</span></div>
+        <div class="screenshot-tile"><img src="screenshots/05-points-rewards.png" alt="Points and rewards screenshot"><span>Points &amp; Rewards</span></div>
+        <div class="screenshot-tile"><img src="screenshots/06-sessions-calendar.png" alt="Sessions calendar screenshot"><span>Sessions Calendar</span></div>
+        <div class="screenshot-tile"><img src="screenshots/07-notifications.png" alt="Notifications screenshot"><span>Notifications</span></div>
+        <div class="screenshot-tile"><img src="screenshots/08-admin-dashboard.png" alt="Admin dashboard screenshot"><span>Admin Dashboard</span></div>
+        <div class="screenshot-tile"><img src="screenshots/09-reports.png" alt="Reports screenshot"><span>Reports</span></div>
+        <div class="screenshot-tile"><img src="screenshots/10-analytics.png" alt="Analytics screenshot"><span>Analytics</span></div>
+        <div class="screenshot-tile"><img src="screenshots/11-analytics-compare.png" alt="Analytics comparison screenshot"><span>Analytics Compare</span></div>
+        <div class="screenshot-tile"><img src="screenshots/12-upload-files.png" alt="Upload files screenshot"><span>Upload Files</span></div>
+        <div class="screenshot-tile"><img src="screenshots/13-signup.png" alt="Signup screenshot"><span>Signup</span></div>
+        <div class="screenshot-tile"><img src="screenshots/14-hr-dashboard.png" alt="HR dashboard screenshot"><span>HR Dashboard</span></div>
+        <div class="screenshot-tile"><img src="screenshots/15-employees.png" alt="Employees screenshot"><span>Employees</span></div>
+        <div class="screenshot-tile"><img src="screenshots/16-leaves.png" alt="Leaves screenshot"><span>Leaves</span></div>
+        <div class="screenshot-tile"><img src="screenshots/17-kaizen-box.png" alt="Kaizen Box screenshot"><span>Kaizen Box</span></div>
+        <div class="screenshot-tile"><img src="screenshots/18-wellness-challenges.png" alt="Wellness Challenges screenshot"><span>Wellness Challenges</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: HOW TO RUN -->
+  <div class="slide">
+    <span class="section-tag">11</span>
     <div class="slide-title">How to Run</div>
     <div class="slide-subtitle">Get Nabd Space running in 3 simple commands</div>
     <div class="slide-content">
@@ -849,9 +906,9 @@
     </div>
   </div>
 
-  <!-- SLIDE 12: FUTURE WORK -->
+  <!-- SLIDE 13: FUTURE WORK -->
   <div class="slide">
-    <span class="section-tag">11</span>
+    <span class="section-tag">12</span>
     <div class="slide-title">Future Work</div>
     <div class="slide-subtitle">Roadmap for continuing development</div>
     <div class="slide-content">
@@ -881,9 +938,9 @@
     </div>
   </div>
 
-  <!-- SLIDE 13: TEAM -->
+  <!-- SLIDE 14: TEAM -->
   <div class="slide" style="justify-content:center;align-items:center;text-align:center;">
-    <span class="section-tag">12</span>
+    <span class="section-tag">13</span>
     <div style="font-size:48px;margin-bottom:16px;">👩‍💻</div>
     <div class="slide-title" style="font-size:42px;">Team</div>
     <div style="width:80px;height:2px;background:linear-gradient(90deg,var(--lavender),var(--pink));border-radius:2px;margin:12px auto 24px;"></div>
@@ -921,7 +978,7 @@
     </div>
   </div>
 
-  <!-- SLIDE 14: SUMMARY -->
+  <!-- SLIDE 15: SUMMARY -->
   <div class="slide" style="justify-content:center;align-items:center;text-align:center;">
     <span class="section-tag">✨</span>
     <div style="font-size:48px;margin-bottom:16px;">

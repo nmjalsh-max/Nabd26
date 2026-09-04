@@ -19,6 +19,11 @@ const pages = [
   { url: '/analytics-2', name: '11-analytics-compare' },
   { url: '/upload', name: '12-upload-files' },
   { url: '/signup', name: '13-signup' },
+  { url: '/hr', name: '14-hr-dashboard' },
+  { url: '/employees', name: '15-employees' },
+  { url: '/leaves', name: '16-leaves' },
+  { url: '/kaizen', name: '17-kaizen-box' },
+  { url: '/challenges', name: '18-wellness-challenges' },
 ];
 
 // Set mock auth before visiting protected pages
@@ -82,7 +87,7 @@ async function main() {
           localStorage.setItem('mock_auth', JSON.stringify({ role: 'employee', userId: 'emp1' }));
         });
         await wait(500);
-      } else if (url.startsWith('/admin') || url.startsWith('/reports') || url.startsWith('/analytics') || url.startsWith('/upload')) {
+      } else if (url.startsWith('/admin') || url.startsWith('/reports') || url.startsWith('/analytics') || url.startsWith('/upload') || url.startsWith('/hr') || url.startsWith('/employees')) {
         await page.goto(`${BASE_URL}/login`, { waitUntil: 'networkidle0', timeout: 15000 });
         await page.evaluate(() => {
           localStorage.setItem('mock_auth', JSON.stringify({ role: 'admin', userId: 'admin' }));
